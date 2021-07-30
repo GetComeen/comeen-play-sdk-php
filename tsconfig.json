@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "sourceMap": true,
+        "allowJs": true,
+        "typeRoots": [
+            "node_modules/@types",
+            "resources/js/@types"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/*"]
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
