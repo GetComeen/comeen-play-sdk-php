@@ -22,7 +22,7 @@ class UrlImporter extends ApplicationImporter
         $disk->makeDirectory('/tmp');
         $this->path = $disk->getAdapter()->getPathPrefix(). 'tmp';
 
-        $gitWrapper = new GitWrapper('/usr/local/bin/git');
+        $gitWrapper = new GitWrapper('git');
         $gitWrapper->cloneRepository($value, $this->path);
 
         $this->content = Yaml::parseFile($this->path.'/manifest.yml');
