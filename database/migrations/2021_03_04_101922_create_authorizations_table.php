@@ -43,7 +43,7 @@ class CreateAuthorizationsTable extends Migration
                 'token' => null,
                 'channel' => 'alpha',
             ],
-        ])->withTimestamps();
+        ]);
     }
 
     /**
