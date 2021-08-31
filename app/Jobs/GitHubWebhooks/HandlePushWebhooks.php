@@ -7,7 +7,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Arr;
 use Spatie\GitHubWebhooks\Models\GitHubWebhookCall;
 use Symplify\GitWrapper\GitWrapper;
 

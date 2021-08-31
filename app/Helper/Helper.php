@@ -21,9 +21,9 @@ class Helper
         return $lang;
     }
 
-    public static function initModelTranslation($lng, $path) {
+    public static function initModelTranslation($lang, $path) {
         try {
-            return new i18Next($lng, $path);
+            return new i18Next($lang, $path);
         } catch (\Exception $e) {
             dd('i18next exception init model translation', $e);
         }
