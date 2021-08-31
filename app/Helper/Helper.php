@@ -3,7 +3,7 @@
 
 namespace App\Helper;
 
-use Aiken\i18next\i18Next;
+use Aiken\i18next\i18next;
 use Illuminate\Support\Facades\Auth;
 
 class Helper
