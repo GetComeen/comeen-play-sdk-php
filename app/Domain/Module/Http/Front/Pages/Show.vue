@@ -90,88 +90,108 @@
 <!--    <SlideOptions :slide="context.slide"></SlideOptions>-->
   </div>
   <div class="default shadow mt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <Slide :context="context"></Slide>
+    <Slide :context="context"></Slide>
   </div>
+
 </template>
 <script lang="ts">
 
-import {defineComponent, PropType, h, defineAsyncComponent } from "vue";
+import {defineComponent, PropType, h, defineAsyncComponent, reactive, onMounted} from "vue";
 import App from "@/Layouts/App.vue";
-import importComponent from "@/import";
+import {importComponent, importModule} from "@/import";
 import { Link } from '@inertiajs/inertia-vue3';
 import Loader from "@/Components/Loader.vue";
-
-
-interface thing {
-    name: string,
-    description: string
-}
-
-const asyncComponentLoadTimeout = 5000;
+import {IModule, ISlideContext, SlideModule, SlideModuleConstructor} from "dynamicscreen-sdk-js";
 
 export default defineComponent({
-    layout: App,
-    props: {
-        module: { type: Object, required: true },
-    },
-    components: {
-      Link,
-      Slide: defineAsyncComponent({
-        // image
-        // loader: () => importComponent("DynamicScreenLibrary", "https://1346ef55da3b.ngrok.io/dynamicscreen.image/0.2.0/dist/Image.js", asyncComponentLoadTimeout),
-        // video
-        loader: () => importComponent("DynamicScreenLibrary", "https://40891f4c1f28.ngrok.io/dynamicscreen.video/0.2.0/dist/VideoOptions.js", asyncComponentLoadTimeout),
-        // message
-        // loader: () => importComponent("DynamicScreenLibrary", "https://1346ef55da3b.ngrok.io/dynamicscreen.message2/0.2.0/dist/SimpleMessage.js", asyncComponentLoadTimeout),
-        loadingComponent: Loader,
-        errorComponent: h("div", {class: "flex items-center justify-center text-blue-500"}, "Failed to load component"),
-        delay: 0,
-        timeout: asyncComponentLoadTimeout,
-      }),
-    },
-    data() {
-        return {
-          context: {
-            slide: {
-              buildUrl: "https://40891f4c1f28.ngrok.io/dynamicscreen.video/0.2.0/dist/VideoOptions.js",
-              data: {
-                margin: '1',
-                media: {
-                  // video unisport
-                  url: "https://dynamicscreen-uploads-fr.s3.eu-west-3.amazonaws.com/test-corentin/646/dmGqjlVsujgQ5LJVgGywLjIvRIWRQYZaNLD5OD4U.mp4",
-                  // video rocketleague
-                  // url: "https://dynamicscreen-uploads-fr.s3.eu-west-3.amazonaws.com/test-corentin/646/XzO1ENr9FRoG7mPSZ9LJ5M5LtG4Ja5RbFx4xa6k6.mp4",
-                  // image earth
-                  // url: "https://assets.weforum.org/article/image/large_G-u9Rg8kf3ffWB1kNG-xbQBjo9eqdAIWQyxWul08-z4.jpg",
-                },
-                orientation: 0,
-                name: "Image",
-                volume: 9,
-                description: "Image description yeah",
-                background_color: 'green',
-                options: null,
-                color: "red",
-                caption_color: "orange",
-                caption: "I'm just a poor caption you know.."
-              },
-            },
-            settings: {
-              language: "en",
-            }
+  layout: App,
+  props: {
+    module: {type: Object, required: true},
+  },
+  components: {
+    Link,
+    Slide: defineAsyncComponent({
+      // image
+      loader: () => importComponent("DynamicScreenLibrary", "https://ds-golem.eu.ngrok.io/storage/apps/dynamicscreen.image/0.2.0/dist/Image.js"),
+      // video
+      // loader: () => importComponent("DynamicScreenLibrary", "https://86e13ad374e7.ngrok.io/storage/apps/dynamicscreen.video/0.2.0/dist/Video.js"),
+      // message
+      // loader: () => importComponent("DynamicScreenLibrary", "https://86e13ad374e7.ngrok.io/storage/apps/dynamicscreen.message2/0.2.0/dist/AdvancedMessage.js"),
+      // loader: () => importComponent("DynamicScreenLibrary", "https://86e13ad374e7.ngrok.io/storage/apps/dynamicscreen.message2/0.2.0/dist/SimpleMessage.js"),
+      loadingComponent: Loader,
+      errorComponent: h("div", {class: "flex items-center justify-center text-blue-500"}, "Failed to load component"),
+      delay: 0,
+      timeout: 8000,
+    }),
+  },
+  setup(props, ctx) {
+    onMounted(async () => {
+      const module = await importModule(
+        "DynamicScreenLibrary",
+        // "dynamicscreen.image::0.2.0",
+        "https://ds-golem.eu.ngrok.io/storage/apps/dynamicscreen.image/0.2.0/dist/Image.js"
+      ) as IModule;
+
+      const constructor = module.default;
+      let slideModule: SlideModule = new constructor(context);
+
+      console.log(slideModule.onPrepare())
+      console.log(slideModule.onReady())
+      console.log(slideModule.onPlay())
+      // console.log(slideModule);
+      // console.log(slideModule.onPrepare());
+
+      // let slideModule = handler.default();
+    });
+
+    //@ts-ignore
+    const context: ISlideContext = reactive({
+      guardManager: {
+
+      },
+      slide: {
+        id: 55,
+        name: "Une belle slide Image",
+        duration: 10,
+        playlistId: 32,
+        position: 1,
+        buildUrl: "https://f62eae98e2a7.ngrok.io/storage/apps/dynamicscreen.message/0.2.0/dist/AdvancedMessageOptions.js",
+        guards: [],
+        data: {
+          title: 'coucou',
+          message: 'hiboux',
+          margin: '1',
+          media: {
+            // video unisport
+            // url: "https://dynamicscreen-uploads-fr.s3.eu-west-3.amazonaws.com/test-corentin/646/dmGqjlVsujgQ5LJVgGywLjIvRIWRQYZaNLD5OD4U.mp4",
+            // video rocketleague
+            // url: "https://dynamicscreen-uploads-fr.s3.eu-west-3.amazonaws.com/test-corentin/646/XzO1ENr9FRoG7mPSZ9LJ5M5LtG4Ja5RbFx4xa6k6.mp4",
+            // image earth
+            url: "https://assets.weforum.org/article/image/large_G-u9Rg8kf3ffWB1kNG-xbQBjo9eqdAIWQyxWul08-z4.jpg",
           },
-        }
-    },
-    mounted() {
-      // const script = document.createElement("script");
-      // script.src = "https://e449efc12fc8.ngrok.io/dist/Image.js";
-      // script.async = true;
-      // document.body.appendChild(script);
-      console.log('yo')
-    },
-    setup(props) {
-    }
+          url: "https://assets.weforum.org/article/image/large_G-u9Rg8kf3ffWB1kNG-xbQBjo9eqdAIWQyxWul08-z4.jpg",
+          orientation: 0,
+          name: "Image",
+          volume: 9,
+          description: "Image description yeah",
+          background_color: 'green',
+          options: null,
+          color: "red",
+          caption_color: "orange",
+          caption: "I'm just a poor caption you know..",
+          settings: {
+            language: "en",
+          }
+        },
+      },
+    });
+
+    return {context};
+  },
 })
+
 </script>
+
 <style>
 .default {
   background: blue;

@@ -217,26 +217,13 @@
 import {defineComponent, PropType, h, defineAsyncComponent } from "vue";
 import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
-import Loader from "@/Components/Loader.vue";
 import { Inertia } from '@inertiajs/inertia';
 import {useForm} from '@inertiajs/inertia-vue3';
-import importComponent from "@/import.ts";
-
-// Delay before showing the error for loaded components in ms.
-const asyncComponentLoadTimeout = 5000;
 
 export default defineComponent({
   layout: App,
   components: {
-    FormModal,
-    SlideOptions: defineAsyncComponent({
-      loader: () => importComponent("DynamicScreenLibrary", "https://69bb4d8842d0.ngrok.io/dist/ImageOptions.js", asyncComponentLoadTimeout),
-      loadingComponent: Loader,
-      errorComponent: h("div", {class: "flex items-center justify-center text-blue-500"}, "Failed to load component"),
-      // Delay before showing the loading component. Default: 200ms.
-      delay: 0,
-      timeout: asyncComponentLoadTimeout,
-    }),
+    FormModal
   },
   props: {
     users: {type: Array, required: true},

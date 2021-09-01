@@ -45,7 +45,7 @@ class GenerateWebpackConfig extends Command
         $app = Application::find($this->argument('app-id'));
         $file = $app->getOption('path') .'/webpack.config.js';
         $fp = fopen($file, 'w');
-        fwrite($fp, $this->content($app));
+        fwrite($fp, $this->content($app, $app->type. '::' .$app->version));
         fclose($fp);
 
 
@@ -71,7 +71,7 @@ class GenerateWebpackConfig extends Command
         return $entries;
     }
 
-    public function content(Application $app)
+    public function content(Application $app, $libName)
     {
         return "const path = require('path');
         const { VueLoaderPlugin } = require('vue-loader')
@@ -83,7 +83,7 @@ class GenerateWebpackConfig extends Command
             path: path.resolve(__dirname, './dist'),
             publicPath: '/dist/',
             filename: '[name].js',
-            library: ['DynamicScreenLibrary'],
+            library: ['. $libName .'],
             libraryTarget: 'window',
           },
           module: {
@@ -119,7 +119,6 @@ class GenerateWebpackConfig extends Command
             new VueLoaderPlugin()
           ],
           externals: {
-            vue: 'Vue',
           },
         }
         ";
