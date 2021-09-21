@@ -117,8 +117,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRef, Ref } from "vue";
+import {provide, defineComponent, toRef, Ref, PropType} from "vue";
 import App from "@/Layouts/App.vue";
+import {Application} from "./Index.vue";
 
 interface thing {
     name: string,
@@ -128,14 +129,10 @@ interface thing {
 export default defineComponent({
     layout: App,
     props: {
-        application: { type: Array, required: true },
-    },
-    data() {
-        return {
-        }
+        application: { type: Array as PropType<Application[]>, required: true },
     },
     setup(props) {
-
+      return {};
     }
 })
 </script>

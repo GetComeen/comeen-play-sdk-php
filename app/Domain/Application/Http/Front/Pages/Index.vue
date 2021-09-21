@@ -239,6 +239,7 @@ export interface Application {
   id: number | string,
   name: string,
   description: string,
+  type: string,
   logo: string,
   url: string,
   import_type: string,

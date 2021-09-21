@@ -231,7 +231,7 @@
                             <div>
                                 <button @click="dropdownState = !dropdownState" @blur="dropdownState = false" class="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50" id="user-menu" aria-haspopup="true">
                                     <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixqx=SYSCo7DT3K&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                    <span class="hidden ml-3 text-gray-700 text-sm font-medium lg:block"><span class="sr-only">Open user menu for </span>{{ $page.props.auth.user.full_name }}</span>
+                                    <span class="hidden ml-3 text-gray-700 text-sm font-medium lg:block"><span class="sr-only">Open user menu for </span>{{ $page.props.auth.user?.full_name }}</span>
                                     <!-- Heroicon name: solid/chevron-down -->
                                     <svg class="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -271,7 +271,7 @@
           >
             <simple-notification
               class="z-50"
-              v-if="showNotificationPanel && hasNotifications"
+              v-if="showNotificationPanel && hasNotification"
               :flash="notificationContent"
               :type="notificationType"
               @dismiss="dismissNotification"
@@ -282,7 +282,9 @@
 
 </template>
 
+
 <script lang="ts">
+
 import { defineComponent, ref, computed } from "vue";
 import { usePage, Link } from "@inertiajs/inertia-vue3";
 import Breadcrumb from "@/Components/Breadcrumb.vue";

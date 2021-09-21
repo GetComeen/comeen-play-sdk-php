@@ -15,6 +15,7 @@ class BuildController extends Controller
     public function create(Application $app, Module $module): \Illuminate\Http\JsonResponse
     {
 //        $module->load('builds.priviliges');
+        dd('a');
         return response()->json($module->builds);
     }
 

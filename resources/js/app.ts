@@ -3,6 +3,8 @@ import { App, plugin } from "@inertiajs/inertia-vue3";
 import i18next from 'i18next';
 import * as Vue from "vue";
 
+
+
 require('./bootstrap');
 
 declare global {

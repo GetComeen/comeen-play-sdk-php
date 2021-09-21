@@ -217,9 +217,18 @@
                         <label for="applications" class="block text-sm font-medium text-gray-700">
                           Applications
                         </label>
-                        <select id="applications" v-model="form.applications" name="applications" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
-                          <option v-for="app in applications" :key="app.name + app.id" :value="app.id">{{ app.name }}</option>
-                        </select>
+                        <Multiselect
+                          v-model="form.applications"
+                          id="applications"
+                          mode="tags"
+                          :closeOnSelect="false"
+                          :searchable="true"
+                          :createTag="false"
+                          :options="applicationsSelectOptions"
+                        />
+<!--                        <select id="applications" v-model="form.applications" name="applications" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">-->
+<!--                          <option v-for="app in applications" :key="app.name + app.id" :value="app.id">{{ app.name }}</option>-->
+<!--                        </select>-->
                       </div>
 
                       <div class="sm:col-span-6 flex items-center justify-between">
@@ -294,15 +303,24 @@
                   <label for="applications" class="block text-sm font-medium text-gray-700">
                     Applications
                   </label>
-                  <VueMultiselect
+<!--                  <Multiselect-->
+<!--                    v-model="form.applications"-->
+<!--                    tag-placeholder="Add this as new tag"-->
+<!--                    placeholder="Search a tag"-->
+<!--                    label="name" track-by="code"-->
+<!--                    :options="applicationsSelectOptions"-->
+<!--                    :multiple="true"-->
+<!--                    :taggable="true"-->
+<!--                    ></Multiselect>-->
+
+                  <Multiselect
                     v-model="form.applications"
-                    tag-placeholder="Add this as new tag"
-                    placeholder="Search a tag"
-                    label="name" track-by="code"
+                    mode="tags"
+                    :closeOnSelect="false"
+                    :searchable="true"
+                    :createTag="false"
                     :options="applicationsSelectOptions"
-                    :multiple="true"
-                    :taggable="true"
-                    ></VueMultiselect>
+                  />
                 </div>
 
                 <div class="sm:col-span-6 flex items-center justify-between">
@@ -360,10 +378,10 @@
 import {defineComponent, PropType, computed, ref } from "vue";
 import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
-// @ts-ignore
-import VueMultiselect from 'vue-multiselect';
 import { useForm, Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
+//@ts-ignore
+import Multiselect from '@vueform/multiselect'
 import { Application } from "../../../../Application/Http/Front/Pages/Index.vue";
 
 export interface Authorization {
@@ -376,8 +394,8 @@ export interface Authorization {
 }
 
 export interface ApplicationSelectOption {
-  name: string,
-  code: number | string,
+  label: string,
+  value: number | string,
 }
 
 export enum CHANNEL {
@@ -392,7 +410,7 @@ type ApplicationSelectOptionForm = ApplicationSelectOption | string | number;
 
 export default defineComponent({
     layout: App,
-    components: { FormModal, VueMultiselect, Link },
+    components: { FormModal, Multiselect, Link },
     props: {
       authorizations: { type: Array as PropType<Authorization[]>, required: true },
       applications: { type: Array as PropType<Application[]>, required: true },
@@ -421,7 +439,7 @@ export default defineComponent({
 
       const applicationsSelectOptions = computed(() => {
         return props.applications.map((app) => {
-          return { name: app.name, code: app.id };
+          return { label: app.name, value: app.id };
         });
       });
 
@@ -435,9 +453,7 @@ export default defineComponent({
       });
 
       const submitUpdateForm = (() => {
-        form
-          .transform(data => ({ ...data, applications: data.applications.map((option: ApplicationSelectOptionForm) => (option as ApplicationSelectOption)?.code)}))
-          .put('/authorizations/'+ activeAuthorization?.id, {
+        form.put('/authorizations/'+ activeAuthorization?.id, {
             onSuccess: () => {
               showUpdateModal.value = false;
               form.reset();
@@ -448,8 +464,9 @@ export default defineComponent({
       const openUpdateModal = ((authorization: Authorization) => {
         activeAuthorization = authorization;
         form.name = authorization.name;
+        //@ts-ignore
         form.applications = authorization.applications.map((app) => {
-          return { name: app.name, code: app.id };
+          return app.id;
         });
         form.channel = authorization.channel;
         form.active = authorization.active;
@@ -468,12 +485,13 @@ export default defineComponent({
         })
       })
 
+
       return {
-        form,
+        form, showCreateModal, showDeleteModal, showUpdateModal,
         publicAuthorizations, privateAuthorizations, applicationsSelectOptions,
         submitCreateForm, submitUpdateForm, openUpdateModal, openDeleteModal, submitDeleteForm
       };
     },
 })
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.css"></style>
+<style src="@vueform/multiselect/themes/default.css"></style>

@@ -30,7 +30,7 @@ class AuthorizationController extends Controller
             'applications' => ['required', 'exists:applications,id'],
         ]);
 
-        $data['token'] = Str::random(40);
+        $data['api_token'] = Str::random(40);
         $authorization = Authorization::create($data);
         if (request()->get('applications')) {
             $authorization->applications()->sync($data['applications']);
@@ -43,6 +43,7 @@ class AuthorizationController extends Controller
 
     public function update(Authorization $authorization)
     {
+//        dd(request()->all());
         $data = request()->validate([
             'name' => ['required', 'max:40', 'min:2'],
             'channel' => ['required', 'in:stable,rc,beta,alpha'],

@@ -8,7 +8,12 @@
     <link href="/fontawesome/css/all.css" rel="stylesheet">
     <script src="{{ mix('/js/app.js') }}" defer></script>
 </head>
+<script lang="scss">
+{{--@import '@vueform/multiselect/themes/tailwind.scss'--}}
+</script>
 <body>
 @inertia
 </body>
 </html>
+<style src="@vueform/multiselect/themes/default.css"></style>
+

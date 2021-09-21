@@ -115,12 +115,11 @@ export default defineComponent({
         remember: false,
       });
 
-      return { form };
-    },
-    methods: {
-      submitForm() {
-        this.form.post('/login', {})
+      const submitForm = () => {
+        form.post('/login', {})
       }
-    }
+
+      return { form, submitForm };
+    },
 })
 </script>

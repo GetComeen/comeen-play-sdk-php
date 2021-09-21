@@ -29,7 +29,7 @@ Route::namespace('App\Domain\API\Controllers\\')
 
         Route::get('/applications', "ApplicationController@index");
         Route::get('/applications/{app}', "ApplicationController@show");
-        Route::get('/applications/{app}/build', "ApplicationController@getBuildPath");
+        Route::get('/applications/{app}/build', "ApplicationController@getBuild");
 
         Route::get('/bundles', "BundleController@index");
         Route::get('/bundles/{bundle}', "BundleController@show");

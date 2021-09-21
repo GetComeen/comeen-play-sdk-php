@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Domain\Home\Http\Controllers\HomeController;
 
-Route::get("/", [HomeController::class, "index"])->name('home');
+Route::get("/", [HomeController::class, "index"])->middleware('auth')->name('home');
 
 Route::namespace('App\Domain\Auth')->group(__DIR__ . '/auth.php');
 

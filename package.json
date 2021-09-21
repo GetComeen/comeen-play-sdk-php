@@ -31,10 +31,10 @@
         "webpack-cli": "^4.6.0"
     },
     "dependencies": {
-        "dynamicscreen-sdk-js": "file:dynamicscreen-sdk-js",
         "@tailwindcss/forms": "^0.2.1",
+        "@vueform/multiselect": "^2.2.0",
+        "dynamicscreen-sdk-js": "^0.0.4",
         "htmlspecialchars": "^1.0.5",
-        "i18next": "^20.4.0",
-        "vue-multiselect": "^3.0.0-alpha.2"
+        "i18next": "^20.4.0"
     }
 }
