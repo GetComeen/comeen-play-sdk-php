@@ -46,7 +46,25 @@ class ApplicationController extends Controller
         return response()->json($app);
     }
 
-    public function getBuild($appId): \Illuminate\Http\JsonResponse
+    public function getBuild($appId, $identifier): \Illuminate\Http\JsonResponse
+    {
+
+        $build = Build::where([
+            'application_id' => $appId,
+            'version' => request()->get('version'),
+            'channel' => request()->get('channel')
+        ])->with('application')->get();
+
+        if ($build->isEmpty()) {
+            return response()->json('No available build for this version');
+        }
+
+        $scriptPath = $build->first()->application->getOption('path'). "/dist/$identifier";
+
+        return response()->json(['component' => File::get($scriptPath)]);
+    }
+
+    public function getBuilds($appId): \Illuminate\Http\JsonResponse
     {
         $build = Build::where([
             'application_id' => $appId,
@@ -58,12 +76,19 @@ class ApplicationController extends Controller
             return response()->json('No available build for this version');
         }
 
+//        $artifactsNames = $build->first()->application->modules->map(function ($module) {
+//            return [
+//                'slide' => $module->getOption('vue.component')
+//            ]
+//        });
         $slidePath = $build->first()->application->getOption('path'). '/dist/'. $build->first()->application->name .'.js';
         $optionsPath = $build->first()->application->getOption('path'). '/dist/'. $build->first()->application->name .'Options.js';
 
         return response()->json([
-            'slide' => File::get($slidePath),
-            'options' => File::get($optionsPath)
+            'image' => [
+                'slide' => File::basename($slidePath),
+                'options' => File::basename($optionsPath),
+            ],
         ]);
     }
 }

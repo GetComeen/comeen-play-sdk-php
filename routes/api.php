@@ -29,12 +29,15 @@ Route::namespace('App\Domain\API\Controllers\\')
 
         Route::get('/applications', "ApplicationController@index");
         Route::get('/applications/{app}', "ApplicationController@show");
-        Route::get('/applications/{app}/build', "ApplicationController@getBuild");
+        Route::get('/applications/{app}/builds', "ApplicationController@getBuilds");
+        Route::get('/applications/{app}/builds/{identifier}', "ApplicationController@getBuild");
 
         Route::get('/bundles', "BundleController@index");
         Route::get('/bundles/{bundle}', "BundleController@show");
 
         Route::get('/auth-providers/{provider}', "AuthProviderController@initiate")->name('initiate');
+        Route::get('/auth-providers/{provider}/test', "AuthProviderController@test")->name('initiate');
+        Route::get('/auth-providers/{provider}/me', "AuthProviderController@userInfo")->name('initiate');
         Route::post('/auth-providers/{provider}', "AuthProviderController@connect")->name('validate');
 
     });

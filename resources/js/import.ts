@@ -3,17 +3,18 @@ import { IModule, ISlideContext, SlideModule } from "dynamicscreen-sdk-js";
 
 const modules = [] as any;
 
-export async function importComponent(componentName: string, name: string, url: string, timeout: number = 8000): Promise<ComponentOptions> {
-  return new Promise(async (resolve, reject) => {
-    const module: IModule = await importModule(componentName, name, url, timeout);
-    //@ts-ignore
-    const con = module.default;
-    console.log(con, name, window, modules)
-    let slideModule: SlideModule = new con(context);
-
-    resolve(slideModule.component);
-  });
-}
+// export async function importComponent(componentName: string, name: string, url: string, timeout: number = 8000): Promise<ComponentOptions> {
+//   return new Promise(async (resolve, reject) => {
+//     const module: IModule = await importModule(componentName, name, url, timeout);
+//     //@ts-ignore
+//     const con = module.default;
+//     console.log(con, name, window, modules)
+//     let slideModule: SlideModule = new con(context);
+//
+//     // @ts-ignore
+//     resolve(slideModule.component);
+//   });
+// }
 
 export async function importModule(componentName: string, name: string, url: string, timeout: number = 8000): Promise<IModule> {
     return new Promise((resolve, reject) => {
@@ -100,44 +101,3 @@ export async function importComponentOptions(componentName: string, name: string
     }
   });
 }
-
-const context: ISlideContext = {
-  //@ts-ignore
-  guardManager: {
-
-  },
-  slide: {
-    id: 55,
-    name: "Une belle slide Image",
-    duration: 10,
-    playlistId: 32,
-    position: 1,
-    guards: [],
-    data: {
-      title: 'coucou',
-      message: 'hiboux',
-      margin: '1',
-      media: {
-        // video unisport
-        // url: "https://dynamicscreen-uploads-fr.s3.eu-west-3.amazonaws.com/test-corentin/646/dmGqjlVsujgQ5LJVgGywLjIvRIWRQYZaNLD5OD4U.mp4",
-        // video rocketleague
-        // url: "https://dynamicscreen-uploads-fr.s3.eu-west-3.amazonaws.com/test-corentin/646/XzO1ENr9FRoG7mPSZ9LJ5M5LtG4Ja5RbFx4xa6k6.mp4",
-        // image earth
-        url: "https://assets.weforum.org/article/image/large_G-u9Rg8kf3ffWB1kNG-xbQBjo9eqdAIWQyxWul08-z4.jpg",
-      },
-      url: "https://assets.weforum.org/article/image/large_G-u9Rg8kf3ffWB1kNG-xbQBjo9eqdAIWQyxWul08-z4.jpg",
-      orientation: 0,
-      name: "Image",
-      volume: 9,
-      description: "Image description yeah",
-      background_color: 'green',
-      options: null,
-      color: "red",
-      caption_color: "orange",
-      caption: "I'm just a poor caption you know..",
-      settings: {
-        language: "en",
-      }
-    },
-  },
-};

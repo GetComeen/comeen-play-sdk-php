@@ -18,6 +18,7 @@ class CreateApplicationsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('version');
+            $table->string('identifier');
             $table->string('channel');
             $table->string('api_level');
             $table->string('logo')->default('fa fa-info-circle');

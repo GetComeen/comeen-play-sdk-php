@@ -49,11 +49,10 @@ abstract class ApplicationImporter
         return $process->run(null, ['PATH' => ':/usr/local/bin']);
     }
 
-    private function build_webpack_artifacts(): int
+    private function build_webpack_artifacts()
     {
         Artisan::call('generate:webpack-config '. $this->app->id);
-        $process = Process::fromShellCommandline('/usr/local/bin/webpack --config '.$this->path .'/webpack.config.js');
-        return $process->run(null, ['PATH' => ':/usr/local/bin']);
+        Artisan::call('build:application '. $this->app->id);
     }
 
     public function sync($value)
@@ -137,6 +136,7 @@ abstract class ApplicationImporter
         $privileges_list->each(function ($privileges, $type) {
             $priv_list = collect($privileges)->map(function ($privilege) use ($type) {
                 $priv = new Privilege();
+                $priv->identifier =
                 $priv->type = $type;
                 $priv->why = Arr::get($privilege, 'why');
                 if ($type === 'needs_account') {
@@ -159,6 +159,9 @@ abstract class ApplicationImporter
     public function cancelImport() {
         if ($this->path) {
             exec("rm -rf $this->path");
+            if ($this->app) {
+                $this->app->delete();
+            }
         }
     }
 }

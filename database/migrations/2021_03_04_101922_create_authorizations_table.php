@@ -16,7 +16,7 @@ class CreateAuthorizationsTable extends Migration
         Schema::create('authorizations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('token')->nullable();
+            $table->string('api_token')->nullable();
             $table->string('channel');
             $table->boolean('active')->default(true);
             $table->timestamps();

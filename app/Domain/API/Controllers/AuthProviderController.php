@@ -45,6 +45,12 @@ class AuthProviderController extends Controller
     public function test($provider): \Illuminate\Http\JsonResponse
     {
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'wip' => true]);
+    }
+
+    public function userInfo($provider): \Illuminate\Http\JsonResponse
+    {
+
+        return response()->json(['success' => true, 'wip' => true]);
     }
 }

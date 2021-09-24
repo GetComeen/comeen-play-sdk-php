@@ -98,7 +98,6 @@
 
 import {inject, defineComponent, PropType, h, defineAsyncComponent, reactive, onMounted, ref} from "vue";
 import App from "@/Layouts/App.vue";
-import {importComponent, importComponentOptions, importModule} from "@/import";
 import { Link } from '@inertiajs/inertia-vue3';
 import Loader from "@/Components/Loader.vue";
 //@ts-ignore

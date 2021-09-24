@@ -43,47 +43,51 @@ class GenerateWebpackConfig extends Command
     public function handle(): int
     {
         $app = Application::find($this->argument('app-id'));
-        $file = $app->getOption('path') .'/webpack.config.js';
-        $fp = fopen($file, 'w');
-        fwrite($fp, $this->content($app, $app->type. '::' .$app->version));
-        fclose($fp);
+        $app->modules->each(function ($module) use ($app) {
+            $lib = $app->type .'.'. $module->type .'.'. $module->identifier .'::'. $app->version;
+            $path = $module->getOption('vue.component');
+
+            $file = $app->getOption('path') .'/'. $module->identifier .'.webpack.config.js';
+            $fp = fopen($file, 'w');
+            fwrite($fp, $this->content($lib, $path));
+            fclose($fp);
+
+            echo "$file has been successfully generated for module $module->identifier (slide) ($app->name)\n";
 
 
-        echo "webpack.config.js has been successfully generated for application $app->name\n";
+            $path = $module->getOption('vue.options');
+
+            $file = $app->getOption('path') .'/'. $module->identifier .'-options.webpack.config.js';
+            $fp = fopen($file, 'w');
+            fwrite($fp, $this->content($lib, $path));
+            fclose($fp);
+
+            echo "$file has been successfully generated for module $module->identifier (options) ($app->name)\n";
+        });
 
         return $app->id;
     }
 
-    public function entries(Application $app) {
-        $entries = "{\n";
-        $app->modules->each(function ($module) use (&$entries) {
-            $path = $module->getOption('vue.component');
-            $pathInfo = pathinfo($path);
-            $name = $pathInfo['filename'];
-            $entries .=  "    $name: path.resolve(__dirname, '$path'),\n";
-
-            $path = $module->getOption('vue.options');
-            $pathInfo = pathinfo($path);
-            $name = $pathInfo['filename'];
-            $entries .=  "    $name: path.resolve(__dirname, '$path'),\n";
-        });
-        $entries .= "  }";
-        return $entries;
+    public function entry($path)
+    {
+        $pathInfo = pathinfo($path);
+        $name = $pathInfo['filename'];
+        return  "{\n$name: path.resolve(__dirname, '$path'),\n}\n";
     }
 
-    public function content(Application $app, $libName)
+    public function content($lib, $path)
     {
         return "const path = require('path');
         const { VueLoaderPlugin } = require('vue-loader')
 
         module.exports = {
           mode: 'development',
-          entry: ". $this->entries($app) .",
+          entry: ". $this->entry($path) .",
           output: {
             path: path.resolve(__dirname, './dist'),
             publicPath: '/dist/',
             filename: '[name].js',
-            library: ['. $libName .'],
+            library: ['$lib'],
             libraryTarget: 'window',
           },
           module: {

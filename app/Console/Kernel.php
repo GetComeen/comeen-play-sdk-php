@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ImportApplication::class,
         Commands\GenerateWebpackConfig::class,
+        Commands\BuildApplication::class,
         Commands\InitAppServer::class,
     ];
 

@@ -32,7 +32,6 @@ class UrlImporter extends ApplicationImporter
         $disk->makeDirectory($dir_path);
         $disk->makeDirectory("$dir_path/dist");
         $app_path = $disk->getAdapter()->getPathPrefix() . $dir_path;
-
         exec("cp -a $this->path/. $app_path");
         exec("rm -rf $this->path");
 

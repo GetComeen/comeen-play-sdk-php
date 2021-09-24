@@ -33,7 +33,7 @@
     "dependencies": {
         "@tailwindcss/forms": "^0.2.1",
         "@vueform/multiselect": "^2.2.0",
-        "dynamicscreen-sdk-js": "^0.0.4",
+        "dynamicscreen-sdk-js": "^0.0.11",
         "htmlspecialchars": "^1.0.5",
         "i18next": "^20.4.0"
     }
