@@ -26,7 +26,7 @@ class Module extends Model
         'type',
         'description',
         'identifier',
-        'application_id',
+//        'application_id',
         'options',
     ];
 
@@ -35,7 +35,7 @@ class Module extends Model
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = ['application'];
 
     /**
      * The attributes that should be cast to native types.

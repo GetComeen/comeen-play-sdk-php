@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,10 @@ Route::namespace('App\Domain\API\Controllers\\')
     ->group(function () {
         Route::get('/me', function (Request $request) {
             return $request->user();
+        });
+
+        Route::get('/', function (Request $request) {
+            return DB::table('settings')->pluck('value', 'key');
         });
 
         Route::get('/applications/{app}/modules/{module}', "ModuleController@show");

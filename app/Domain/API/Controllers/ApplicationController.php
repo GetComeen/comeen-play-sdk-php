@@ -20,7 +20,7 @@ class ApplicationController extends Controller
 
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $applications = Application::with('modules', 'builds.privileges')->get();
+        $applications = Application::with('modules')->paginate(1);
         return response()->json($applications);
     }
 
@@ -36,11 +36,12 @@ class ApplicationController extends Controller
         $version = Arr::get($data, 'version');
 
         if ($version) {
-            $app->load(['builds' => function ($q) use ($version) {
-                $q->where('version', $version)->with('privileges');
-            }]);
+//            $app->load(['builds' => function ($q) use ($version) {
+//                $q->where('version', $version)->with('privileges');
+//            }]);
         } else {
-            $app->load(['modules', 'builds.privileges']);
+            $app->load(['modules']);
+//            $app->load(['modules', 'builds.privileges']);
         }
 
         return response()->json($app);
@@ -76,11 +77,6 @@ class ApplicationController extends Controller
             return response()->json('No available build for this version');
         }
 
-//        $artifactsNames = $build->first()->application->modules->map(function ($module) {
-//            return [
-//                'slide' => $module->getOption('vue.component')
-//            ]
-//        });
         $slidePath = $build->first()->application->getOption('path'). '/dist/'. $build->first()->application->name .'.js';
         $optionsPath = $build->first()->application->getOption('path'). '/dist/'. $build->first()->application->name .'Options.js';
 
