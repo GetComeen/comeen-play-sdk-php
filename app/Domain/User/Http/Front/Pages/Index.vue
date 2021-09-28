@@ -86,13 +86,12 @@
                     Admin
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a href="#" @click="openDeleteModal(user)" class="text-indigo-600 hover:text-indigo-900">Delete</a>
+                  <a href="#" @click="openDeleteModal(user.id)" class="text-indigo-600 hover:text-indigo-900">Delete</a>
                 </td>
               </tr>
               </tbody>
             </table>
           </div>
-          <SlideOptions :slide="slide"></SlideOptions>
         </div>
       </div>
     </div>
@@ -214,7 +213,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType, h, defineAsyncComponent } from "vue";
+import {defineComponent, PropType, h, defineAsyncComponent, ref, reactive} from "vue";
 import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
 import { Inertia } from '@inertiajs/inertia';
@@ -226,59 +225,51 @@ export default defineComponent({
     FormModal
   },
   props: {
-    users: {type: Array, required: true},
+    users: {type: Object, required: true},
     errors: {type: Object as PropType<number>}
   },
-  data() {
-    return {
-      slide: {
-        name: "Simple Message",
-        description: "Show simple message with a title and background color",
-        options: null,
-      },
-      asyncComponentLoadTimeout: 5000,
-      showCreateModal: false,
-      showDeleteModal: false,
-      activeUser: undefined as any,
-    }
-  },
   setup() {
-    const form = useForm({
+    const showCreateModal = ref(false);
+    const showDeleteModal = ref(false);
+    let activeUserId = ref(0);
+
+    const form = reactive(useForm({
       user_name: null,
       full_name: null,
       email: null,
       password: null,
       generate_password: false,
-    });
+    }));
 
-    return { form }
-  },
-  mounted() {
+    const openDeleteModal = (userId: number) => {
+      showDeleteModal.value = true;
+      activeUserId.value = userId;
+    };
 
-  },
-  methods: {
-    openDeleteModal(user: null) {
-      this.showDeleteModal = true;
-      this.activeUser = user;
-    },
-    submitCreateForm() {
-      this.form.post('/users', {
+    const submitCreateForm = () => {
+      form.post('/users', {
         onSuccess: () => {
-          this.form.reset();
-          this.showCreateModal = false;
+          form.reset();
+          showCreateModal.value = false;
         }
       })
-    },
-    submitDeleteForm() {
-      if (this.activeUser) {
-        Inertia.delete('/users/' + this.activeUser.id, {
+    };
+
+    const submitDeleteForm = () => {
+      if (activeUserId.value) {
+        Inertia.delete('/users/' + activeUserId.value, {
           onSuccess: () => {
-            this.showDeleteModal = false;
-            this.activeUser = null;
+            showDeleteModal.value = false;
+            activeUserId.value = 0;
           }
         })
       }
+    };
+
+    return {
+      form, showCreateModal, showDeleteModal,
+      openDeleteModal, submitDeleteForm, submitCreateForm
     }
-  }
+  },
 })
 </script>

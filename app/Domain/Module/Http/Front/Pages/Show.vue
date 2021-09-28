@@ -87,11 +87,10 @@
         </div>
       </dl>
     </div>
-<!--    <SlideOptions :slide="context.slide"></SlideOptions>-->
   </div>
-  <div v-if="loaded" class="default shadow mt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <GenericSlide :module="slideModule"></GenericSlide>
-  </div>
+<!--  <div v-if="loaded" class="default shadow mt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">-->
+<!--    <GenericSlide :module="slideModule"></GenericSlide>-->
+<!--  </div>-->
 
 </template>
 <script lang="ts">
@@ -99,11 +98,9 @@
 import {inject, defineComponent, PropType, h, defineAsyncComponent, reactive, onMounted, ref} from "vue";
 import App from "@/Layouts/App.vue";
 import { Link } from '@inertiajs/inertia-vue3';
-import Loader from "@/Components/Loader.vue";
 //@ts-ignore
 import GenericSlide from "@/Components/GenericSlide.vue";
 import {IModule, ISlideContext, SlideModule, SlideModuleConstructor} from "dynamicscreen-sdk-js";
-import * as Vue from "vue";
 
 export default defineComponent({
   layout: App,

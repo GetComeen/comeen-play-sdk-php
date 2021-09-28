@@ -1,5 +1,4 @@
 <template>
-    <!-- This example requires Tailwind CSS v2.0+ -->
     <nav :class="className" class="flex" aria-label="Breadcrumb">
         <ol class="bg-white rounded-md shadow px-6 flex space-x-4">
             <li class="flex">
@@ -38,6 +37,7 @@
 <script lang="ts">
 import { defineComponent, toRef, Ref } from "vue";
 
+
 export default defineComponent({
     name: "Breadcrumb",
     props: {
@@ -50,7 +50,3 @@ export default defineComponent({
 })
 
 </script>
-
-<style scoped>
-
-</style>

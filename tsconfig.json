@@ -3,6 +3,7 @@
         "target": "es2015",
         "module": "esnext",
         "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "strict": true,
         "sourceMap": true,
         "allowJs": true,
