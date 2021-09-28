@@ -17,6 +17,7 @@ class CreatePrivilegesTable extends Migration
             $table->id();
             $table->string('type');
             $table->json('options');
+            $table->string('identifier');
             $table->string('why');
             $table->timestamps();
         });

@@ -30,7 +30,7 @@ class ApplicationPolicy
      */
     public function view(Authorization $authorization, Application $application)
     {
-        if (!$authorization->token) {
+        if (!$authorization->api_token) {
             return true;
         }
 

@@ -25,22 +25,22 @@ class CreateAuthorizationsTable extends Migration
         \Illuminate\Support\Facades\DB::table('authorizations')->insert([
             [
                 'name' => 'Public',
-                'token' => null,
+                'api_token' => null,
                 'channel' => 'stable',
             ],
             [
                 'name' => 'Public',
-                'token' => null,
+                'api_token' => null,
                 'channel' => 'rc',
             ],
             [
                 'name' => 'Public',
-                'token' => null,
+                'api_token' => null,
                 'channel' => 'beta',
             ],
             [
                 'name' => 'Public',
-                'token' => null,
+                'api_token' => null,
                 'channel' => 'alpha',
             ],
         ]);

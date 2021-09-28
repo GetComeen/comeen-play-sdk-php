@@ -136,7 +136,7 @@ abstract class ApplicationImporter
         $privileges_list->each(function ($privileges, $type) {
             $priv_list = collect($privileges)->map(function ($privilege) use ($type) {
                 $priv = new Privilege();
-                $priv->identifier =
+                $priv->identifier = Arr::get($privilege, 'identifier');
                 $priv->type = $type;
                 $priv->why = Arr::get($privilege, 'why');
                 if ($type === 'needs_account') {
