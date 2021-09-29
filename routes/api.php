@@ -32,17 +32,17 @@ Route::namespace('App\Domain\API\Controllers\\')
         Route::get('/applications/{app}/modules/{module}', "ModuleController@show");
 //        Route::post('/applications/{app}/modules/{module}', "ModuleController@update");
 
-        Route::get('/applications', "ApplicationController@index");
-        Route::get('/applications/{app}', "ApplicationController@show");
-        Route::get('/applications/{app}/builds', "ApplicationController@getBuilds");
-        Route::get('/applications/{app}/builds/{identifier}', "ApplicationController@getBuild");
+        Route::get('/applications', "ApplicationController@index")->name('applications.index');
+        Route::get('/applications/{app}', "ApplicationController@show")->name('applications.show');
+        Route::get('/applications/{app}/builds', "ApplicationController@getBuilds")->name('applications.builds');
+        Route::get('/applications/{app}/builds/{identifier}', "ApplicationController@getBuild")->name('applications.build');
 
         Route::get('/bundles', "BundleController@index");
         Route::get('/bundles/{bundle}', "BundleController@show");
 
         Route::get('/auth-providers/{provider}', "AuthProviderController@initiate")->name('initiate');
-        Route::get('/auth-providers/{provider}/test', "AuthProviderController@test")->name('initiate');
-        Route::get('/auth-providers/{provider}/me', "AuthProviderController@userInfo")->name('initiate');
+        Route::get('/auth-providers/{provider}/test', "AuthProviderController@test")->name('test');
+        Route::get('/auth-providers/{provider}/me', "AuthProviderController@userInfo")->name('userInfo');
         Route::post('/auth-providers/{provider}', "AuthProviderController@connect")->name('validate');
 
     });

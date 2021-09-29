@@ -2,15 +2,11 @@
 
 namespace App\Domain\API\Controllers;
 
-use Aiken\i18next\i18Next;
 use App\Domain\Application\Model\Application;
-use App\Domain\Authorization\Model\Authorization;
 use App\Domain\Build\Model\Build;
-use App\Domain\Module\Model\Module;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use App\Http\Controllers\Controller;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -53,7 +49,6 @@ class ApplicationController extends Controller
         $build = Build::where([
             'application_id' => $appId,
             'version' => request()->get('version'),
-            'channel' => request()->get('channel')
         ])->with('application')->get();
 
         if ($build->isEmpty()) {
@@ -67,24 +62,37 @@ class ApplicationController extends Controller
 
     public function getBuilds($appId): \Illuminate\Http\JsonResponse
     {
-        $build = Build::where([
-            'application_id' => $appId,
-            'version' => request()->get('version'),
-            'channel' => request()->get('channel')
-        ])->with('application')->get();
+        $channel = request()->user()->channel;
+        $version = request()->get('version');
 
-        if ($build->isEmpty()) {
+        $app = Application::where('id', $appId)->whereHas('builds', function ($query) use ($version) {
+            $query->where('version', $version);
+        })->with('modules')->get()->first();
+
+        if (!$app) {
             return response()->json('No available build for this version');
         }
 
-        $slidePath = $build->first()->application->getOption('path'). '/dist/'. $build->first()->application->name .'.js';
-        $optionsPath = $build->first()->application->getOption('path'). '/dist/'. $build->first()->application->name .'Options.js';
+        $output = $app->modules->map(function ($module) use ($appId, $version) {
+            $slide_path = $module->getOption('vue.component');
+            $options_path = $module->getOption('vue.options');
 
-        return response()->json([
-            'image' => [
-                'slide' => File::basename($slidePath),
-                'options' => File::basename($optionsPath),
-            ],
-        ]);
+            $slide_filename = trim(substr($slide_path, strrpos($slide_path, '/') + 1));
+            $options_filename = trim(substr($options_path, strrpos($options_path, '/') + 1));
+            $slide_filename = str_replace(['.ts', '.vue'], '.js', $slide_filename);
+            $options_filename = str_replace(['.ts', '.vue'], '.js', $options_filename);
+
+            $slideUrl = route('applications.build', [$appId, $slide_filename]). "?version=$version";
+            $optionsUrl = route('applications.build', [$appId, $options_filename]). "?version=$version";
+
+            return [
+                $module->identifier => [
+                    'slide' => $slideUrl,
+                    'options' => $optionsUrl,
+                ],
+            ];
+        });
+
+        return response()->json($output);
     }
 }
