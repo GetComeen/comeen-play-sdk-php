@@ -60,39 +60,6 @@
               </div>
             </div>
           </div>
-
-<!--          <div class="self-center justify-center text-align-center align-items-center mt-6 flex-grow lg:mt-0 lg:ml-6 lg:flex-grow-0 lg:flex-shrink-0">-->
-<!--            <p class="text-sm font-medium text-gray-700" aria-hidden="true">-->
-<!--              Logo-->
-<!--            </p>-->
-<!--            <div class="mt-1 lg:hidden">-->
-<!--              <div class="flex items-center">-->
-<!--                <div class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12" aria-hidden="true">-->
-<!--                  <img class="rounded-full h-full w-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixqx=SYSCo7DT3K&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=320&h=320&q=80" alt="">-->
-<!--                </div>-->
-<!--                <div class="ml-5 rounded-md shadow-sm">-->
-<!--                  <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-light-blue-500">-->
-<!--                    <label for="user_photo" class="relative text-sm leading-4 font-medium text-gray-700 pointer-events-none">-->
-<!--                      <span>Change</span>-->
-<!--                      <span class="sr-only"> user photo</span>-->
-<!--                    </label>-->
-<!--                    <input id="user_photo" name="user_photo" type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <div class="hidden relative rounded-full overflow-hidden lg:block">-->
-<!--              <img class="relative rounded-full w-40 h-40" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixqx=SYSCo7DT3K&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=320&h=320&q=80" alt="">-->
-<!--              <label for="user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">-->
-<!--                <span>Change</span>-->
-<!--                <span class="sr-only"> user photo</span>-->
-<!--                <input type="file" id="user-photo" name="user-photo" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">-->
-<!--              </label>-->
-<!--            </div>-->
-<!--          </div>-->
-
-
         </div>
       </div>
 
@@ -110,12 +77,12 @@
                 </p>
               </div>
               <button type="button"
-                      @click="form.active = !(form.active === true)"
-                      :class="form.active === true ? 'bg-primary-600' : 'bg-gray-200'"
+                      @click="form.active = !form.active"
+                      :class="form.active ? 'bg-primary-600' : 'bg-gray-200'"
                       class="bg-gray-200 ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500" role="switch" aria-checked="false" aria-labelledby="active-label" aria-describedby="active-description">
                 <span class="sr-only">Use setting</span>
                 <span aria-hidden="true"
-                      :class="form.active === true ? 'translate-x-5' : 'translate-x-0'"
+                      :class="form.active ? 'translate-x-5' : 'translate-x-0'"
                       class="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
               </button>
             </li>
@@ -135,7 +102,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType } from "vue";
+import {defineComponent, PropType, reactive} from "vue";
 import App from "@/Layouts/App.vue";
 import {useForm} from '@inertiajs/inertia-vue3';
 
@@ -144,7 +111,7 @@ interface Settings {
   author: string,
   email: string,
   company: string,
-  active: boolean,
+  active: string,
 }
 
 export default defineComponent({
@@ -152,28 +119,21 @@ export default defineComponent({
   props: {
     settings: {type: Object as PropType<Settings>, required: true},
   },
-  data() {
-    return {
-    }
-  },
   setup(props) {
+    const settings = reactive(props.settings);
     const form = useForm({
-      repository_name: props.settings.repository_name,
-      author: props.settings.author,
-      email: props.settings.email,
-      company: props.settings.company,
-      active: props.settings.active,
+      repository_name: settings.repository_name,
+      author: settings.author,
+      email: settings.email,
+      company: settings.company,
+      active: settings.active === '1',
     });
 
-    return { form }
-  },
-  mounted() {
+    const submitUpdateForm = () => {
+      form.post('/settings');
+    };
 
+    return { form, submitUpdateForm }
   },
-  methods: {
-    submitUpdateForm() {
-      this.form.post('/settings');
-    },
-  }
 })
 </script>

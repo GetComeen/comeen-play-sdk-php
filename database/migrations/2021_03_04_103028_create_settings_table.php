@@ -20,11 +20,11 @@ class CreateSettingsTable extends Migration
         });
 
         \Illuminate\Support\Facades\DB::table('settings')->insert([
-            ['key' => 'repository_name', 'value' => ''],
-            ['key' => 'author', 'value' => ''],
-            ['key' => 'email', 'value' => ''],
-            ['key' => 'active', 'value' => false],
-            ['key' => 'company', 'value' => ''],
+            ['key' => 'repository_name', 'value' => 'DynamicScreen App Server'],
+            ['key' => 'author', 'value' => 'DynamicScreen'],
+            ['key' => 'email', 'value' => 'bonjour@dynamicscreen.com'],
+            ['key' => 'active', 'value' => true],
+            ['key' => 'company', 'value' => 'DynamicScreen'],
         ]);
     }
 

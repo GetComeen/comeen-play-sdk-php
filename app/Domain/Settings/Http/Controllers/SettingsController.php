@@ -26,7 +26,7 @@ class SettingsController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
-            'repository_name' => ['required', 'max:30'],
+            'repository_name' => ['required', 'max:40'],
             'author' => ['required', 'max:30'],
             'email' => ['required', 'max:50', 'email'],
             'company' => ['required', 'max:30'],
