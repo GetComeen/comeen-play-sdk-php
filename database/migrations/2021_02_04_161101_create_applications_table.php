@@ -25,6 +25,7 @@ class CreateApplicationsTable extends Migration
             $table->string('type');
             $table->string('import_type');
             $table->json('options');
+            $table->boolean('auto_sync')->default(true);
             $table->timestamps();
         });
     }

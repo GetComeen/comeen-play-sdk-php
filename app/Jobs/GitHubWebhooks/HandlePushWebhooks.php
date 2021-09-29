@@ -26,8 +26,12 @@ class HandlePushWebhooks implements ShouldQueue
 
     public function handle()
     {
-        $url =  $this->webhookCall->payload('repository.url');
-        $app = Application::where('options->repository', $url)->get()->first();
+        $type =  $this->webhookCall->payload('repository.name');
+        $app = Application::where('type', $type)->get()->first();
+
+        if (!$app->auto_sync) {
+            return ;
+        }
         Log::debug($app->name);
         $gitWrapper = new GitWrapper('git');
         $git = $gitWrapper->workingCopy($app->getOption('path'));
@@ -45,7 +49,5 @@ class HandlePushWebhooks implements ShouldQueue
 
         Artisan::call('build:application '. $app->id);
         Log::debug('Modules are built');
-
-        return $app;
     }
 }
