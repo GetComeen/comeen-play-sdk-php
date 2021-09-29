@@ -3,6 +3,7 @@
 
 use Spatie\GitHubWebhooks\Models\GitHubWebhookCall;
 use Spatie\GitHubWebhooks\Jobs\ProcessGitHubWebhookJob;
+use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
 
 return [
     /*
@@ -50,7 +51,7 @@ return [
     /**
      * This class determines if the webhook call should be stored and processed.
      */
-    'profile' => GitHubPushWebhookProfile::class,
+    'profile' => ProcessEverythingWebhookProfile::class,
 
     /*
      * When disabled, the package will not verify if the signature is valid.

@@ -8,6 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SebastianBergmann\Environment\Console;
 use Spatie\GitHubWebhooks\Models\GitHubWebhookCall;
@@ -25,14 +26,14 @@ class HandlePushWebhooks implements ShouldQueue
 
     public function handle()
     {
-        Log::debug($type->das);
-
-        $type =  $this->webhookCall->payload('repository.name');
-        Log::debug($type->das);
-        $app = Application::where('type', $type)->get()->first();
+        $url =  $this->webhookCall->payload('repository.url');
+        $app = Application::where('options->repository', $url)->get()->first();
         Log::debug($app->name);
         $gitWrapper = new GitWrapper('git');
         $git = $gitWrapper->workingCopy($app->getOption('path'));
+        Log::debug(print_r($git, true));
+        Log::debug(print_r($gitWrapper, true));
+
         Log::debug('before pull');
         $git->pull();
         Log::debug('pulled');
