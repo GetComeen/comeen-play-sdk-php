@@ -30,6 +30,7 @@ class Application extends Model
     protected $fillable = [
         'name',
         'description',
+        'logo',
         'version',
         'channel',
         'api_level',
