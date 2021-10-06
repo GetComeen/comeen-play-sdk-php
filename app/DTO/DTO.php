@@ -10,7 +10,7 @@ use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 class DTO extends DataTransferObject
 {
-    public int $id;
+    public int $id = 0;
     public bool $__exists = false;
 
     /**
