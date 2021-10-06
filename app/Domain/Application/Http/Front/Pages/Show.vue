@@ -117,9 +117,9 @@
 </template>
 
 <script lang="ts">
-import {provide, defineComponent, toRef, Ref, PropType} from "vue";
+import {provide, defineComponent, toRef, Ref, PropType, reactive} from "vue";
 import App from "@/Layouts/App.vue";
-import {Application} from "./Index.vue";
+import { Application, Module } from "@/types/generated";
 
 interface thing {
     name: string,
@@ -129,9 +129,10 @@ interface thing {
 export default defineComponent({
     layout: App,
     props: {
-        application: { type: Array as PropType<Application[]>, required: true },
+        application: { type: Object as PropType<Application>, required: true },
     },
     setup(props) {
+      // const modules = reactive(props.application.modules);
       return {};
     }
 })

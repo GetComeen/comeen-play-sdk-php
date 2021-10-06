@@ -4,6 +4,8 @@ namespace App\Domain\Authorization\Http\Controllers;
 
 use App\Domain\Application\Model\Application;
 use App\Domain\Authorization\Model\Authorization;
+use App\DTO\ApplicationDTO;
+use App\DTO\AuthorizationDTO;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -15,15 +17,16 @@ class AuthorizationController extends Controller
     {
         $authorizations = Authorization::with('applications')->get();
         $applications = Application::all();
-//        dd($applications->map->name);
+        dd(route('applications.index'));
         return Inertia::render("Authorization::Index", [
-            'authorizations' => $authorizations,
-            'applications' => $applications
+            'authorizations' => AuthorizationDTO::collection($authorizations),
+            'applications' => ApplicationDTO::collection($applications)
         ]);
     }
 
     public function store()
     {
+//        dd(request()->all());
         $data = request()->validate([
             'name' => ['required', 'max:40', 'min:2'],
             'channel' => ['required', 'in:stable,rc,beta,alpha'],
@@ -43,7 +46,6 @@ class AuthorizationController extends Controller
 
     public function update(Authorization $authorization)
     {
-//        dd(request()->all());
         $data = request()->validate([
             'name' => ['required', 'max:40', 'min:2'],
             'channel' => ['required', 'in:stable,rc,beta,alpha'],

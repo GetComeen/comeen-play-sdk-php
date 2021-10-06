@@ -11,6 +11,8 @@ use App\Domain\Module\Model\Module;
 use App\Domain\Privilege\Model\Privilege;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
 abstract class ApplicationImporter
@@ -88,6 +90,7 @@ abstract class ApplicationImporter
         $app->options = $options;
 
         $app->name = $this->getAttribute('name');
+        $app->logo = $this->getAttribute('logo');
         $app->description = $this->getAttribute('description');
         $app->type = $this->getAttribute('id');
         $app->version = $this->getAttribute('version');
@@ -95,6 +98,10 @@ abstract class ApplicationImporter
         $app->api_level = $this->getAttribute('api-level');
         $app->import_type = $this->type;
         $app->save();
+
+        if (Str::startWith($app->logo, './')) {
+            Storage::put();
+        }
 
         return $app;
     }

@@ -28,7 +28,6 @@ class Build extends Model
         'version',
         'channel',
         'api_level',
-        'api_level',
         'application_id',
     ];
 

@@ -30,7 +30,7 @@ Route::namespace('App\Domain\API\Controllers\\')
         });
 
         Route::get('/applications/{app}/modules/{module}', "ModuleController@show");
-//        Route::post('/applications/{app}/modules/{module}', "ModuleController@update");
+        Route::get('/applications/{app}/modules', "ModuleController@index");
 
         Route::get('/applications', "ApplicationController@index")->name('applications.index');
         Route::get('/applications/{app}', "ApplicationController@show")->name('applications.show');

@@ -4,7 +4,7 @@ namespace App\Domain\API\Controllers;
 
 use App\Domain\Application\Model\Application;
 use App\Domain\Build\Model\Build;
-use Illuminate\Database\Query\Builder;
+use App\DTO\ApplicationDTO;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
@@ -16,8 +16,8 @@ class ApplicationController extends Controller
 
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $applications = Application::with('modules')->paginate(1);
-        return response()->json($applications);
+        $applications = Application::with('modules')->paginate(request()->get('per_page', 10));
+        return response()->json(ApplicationDTO::paginated($applications));
     }
 
     public function show(Application $app): \Illuminate\Http\JsonResponse
@@ -26,7 +26,7 @@ class ApplicationController extends Controller
 
         $data = request()->validate([
             'version' => ['string'],
-            'lang' => ['string']
+            'language' => ['string']
         ]);
 
         $version = Arr::get($data, 'version');

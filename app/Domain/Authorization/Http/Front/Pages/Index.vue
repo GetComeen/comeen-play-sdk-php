@@ -72,7 +72,7 @@
                                 </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                          <span v-if="!auth.applications.length" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          <span v-if="!auth.applications" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                             <Link href="/applications" class="text-primary-600 hover:text-primary-900">*</Link>
                           </span>
                           <span v-else v-for="app in auth.applications" :key="app.id" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -159,8 +159,6 @@
                             <span @click="openDeleteModal(auth)" class="text-red-600 hover:text-red-900 cursor-pointer">Delete</span>
                           </td>
                         </tr>
-
-                        <!-- More items... -->
                         </tbody>
                       </table>
                     </div>
@@ -380,18 +378,8 @@ import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
-//@ts-ignore
 import Multiselect from '@vueform/multiselect'
-import { Application } from "../../../../Application/Http/Front/Pages/Index.vue";
-
-export interface Authorization {
-  id: string | number,
-  name: string,
-  api_token: string,
-  channel: CHANNEL,
-  active: boolean,
-  applications: Application[],
-}
+import { Application, Authorization } from "@/types/generated";
 
 export interface ApplicationSelectOption {
   label: string,
@@ -464,8 +452,7 @@ export default defineComponent({
       const openUpdateModal = ((authorization: Authorization) => {
         activeAuthorization = authorization;
         form.name = authorization.name;
-        //@ts-ignore
-        form.applications = authorization.applications.map((app) => {
+        form.applications = authorization.applications?.map((app) => {
           return app.id;
         });
         form.channel = authorization.channel;

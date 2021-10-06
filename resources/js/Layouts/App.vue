@@ -122,7 +122,7 @@
                     <nav class="mt-5 flex-1 flex flex-col divide-y divide-primary-800 overflow-y-auto" aria-label="Sidebar">
                         <div class="px-2 space-y-1">
                             <!-- Current: "bg-primary-800 text-white", Default: "text-primary-100 hover:text-white hover:bg-primary-600" -->
-                            <Link href="/" class="bg-primary-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md" aria-current="page">
+                            <Link :href="route('applications.index')" class="bg-primary-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md" aria-current="page">
                                 Home
                             </Link>
 
@@ -255,12 +255,11 @@
 
 import { defineComponent, ref, computed } from "vue";
 import { usePage, Link } from "@inertiajs/inertia-vue3";
-import Breadcrumb from "@/Components/Breadcrumb.vue";
 import SimpleNotification from "@/Components/SimpleNotification.vue";
 
 export default defineComponent({
   name: "App",
-  components: {Breadcrumb, SimpleNotification, Link},
+  components: {SimpleNotification, Link},
   props: {
       name: {type: String, default: ""},
   },

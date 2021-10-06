@@ -121,16 +121,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRef, Ref } from "vue";
+import {defineComponent, toRef, Ref, PropType} from "vue";
 import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
+import { Bundle } from "@/types/generated";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
 
 export default defineComponent({
     layout: App,
     components: { FormModal, Link },
     props: {
-      bundles: { type: Array, required: true },
+      bundles: { type: Object as PropType<Bundle[]>, required: true },
     },
     data() {
       return {

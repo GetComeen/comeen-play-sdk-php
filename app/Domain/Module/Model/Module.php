@@ -26,7 +26,7 @@ class Module extends Model
         'type',
         'description',
         'identifier',
-//        'application_id',
+        'application_id',
         'options',
     ];
 

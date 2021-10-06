@@ -3,6 +3,7 @@
 namespace App\Domain\Bundle\Http\Controllers;
 
 use App\Domain\Bundle\Model\Bundle;
+use App\DTO\BundleDTO;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ class BundleController extends Controller
     {
         $bundles = Bundle::all();
         return Inertia::render("Bundle::Index", [
-            'bundles' => $bundles
+            'bundles' => BundleDTO::collection($bundles)
         ]);
     }
 
@@ -21,7 +22,7 @@ class BundleController extends Controller
     {
         $bundle->load('applications');
         return Inertia::render("Bundle::Show", [
-            'bundle' => $bundle
+            'bundle' => BundleDTO::make($bundle)
         ]);
     }
 

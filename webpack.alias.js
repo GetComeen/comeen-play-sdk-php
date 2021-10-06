@@ -24,7 +24,8 @@ function getModules(dir, prefix = "") {
         }
     }
 
-    return res;
+
+  return res;
 }
 
 const alias = getModules(domainDir);

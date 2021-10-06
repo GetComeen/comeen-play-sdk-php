@@ -30,7 +30,8 @@ mix.before(() => {
 mix.ts('resources/js/app.ts', 'public/js')
    .vue({ version: 3 })
    .alias({
-       "@": path.resolve("resources/js"),
+     ziggy: path.resolve('vendor/tightenco/ziggy/dist/vue'),
+     "@": path.resolve("resources/js"),
      'vue$': path.resolve(__dirname, 'node_modules/vue'),
 
    })

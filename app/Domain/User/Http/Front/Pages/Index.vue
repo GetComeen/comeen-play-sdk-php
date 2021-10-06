@@ -216,6 +216,7 @@
 import {defineComponent, PropType, h, defineAsyncComponent, ref, reactive} from "vue";
 import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
+import { User } from "@/types/generated";
 import { Inertia } from '@inertiajs/inertia';
 import {useForm} from '@inertiajs/inertia-vue3';
 
@@ -225,7 +226,7 @@ export default defineComponent({
     FormModal
   },
   props: {
-    users: {type: Object, required: true},
+    users: {type: Object as PropType<User[]>, required: true},
     errors: {type: Object as PropType<number>}
   },
   setup() {

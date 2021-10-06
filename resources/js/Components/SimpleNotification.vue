@@ -29,11 +29,11 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script lang="ts">
 import {defineComponent, computed, onMounted, ref} from "vue";
+
 
 export default defineComponent({
   name: "SimpleNotification",
@@ -64,7 +64,6 @@ export default defineComponent({
     const dismiss = (() => {
       if (dismissTimeout) {
         clearTimeout(dismissTimeout);
-
       }
       emit('dismiss');
     });
@@ -76,7 +75,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped>
-
-</style>

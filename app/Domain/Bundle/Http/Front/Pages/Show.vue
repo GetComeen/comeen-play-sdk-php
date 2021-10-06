@@ -82,7 +82,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
-import { Application } from "../../../../Application/Http/Front/Pages/Index.vue";
+import { Application } from "@/types/generated";
 import App from "@/Layouts/App.vue";
 
 interface Bundle {

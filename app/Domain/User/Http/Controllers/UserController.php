@@ -3,6 +3,7 @@
 namespace App\Domain\User\Http\Controllers;
 
 use App\Domain\User\Model\User;
+use App\DTO\UserDTO;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +19,7 @@ class UserController extends Controller
     {
         $users = User::all();
         return Inertia::render("User::Index", [
-            'users' => $users
+            'users' => UserDTO::collection($users)
         ]);
     }
 
@@ -31,7 +32,7 @@ class UserController extends Controller
       $validated = $request->validate([
         'user_name' => ['required', 'max:30'],
         'full_name' => ['required', 'max:50'],
-        'email' => ['required', 'max:50', 'email'],
+        'email' => ['required', 'max:50', 'email', 'unique:users'],
         'password' => ['required', 'min:4', 'max:20'],
         'generate_password' => ['required', 'boolean'],
       ]);
@@ -51,7 +52,7 @@ class UserController extends Controller
     {
         $users = User::all();
         return Inertia::render("User::Index", [
-          'users' => $users
+          'users' => UserDTO::collection($users)
         ]);
     }
 

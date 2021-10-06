@@ -2,6 +2,9 @@ import { createApp, h } from "vue";
 import { App, plugin } from "@inertiajs/inertia-vue3";
 import i18next from 'i18next';
 import * as Vue from "vue";
+//@ts-ignore
+import { ZiggyVue } from "ziggy";
+import { Ziggy } from '@/ziggy';
 
 
 
@@ -23,5 +26,6 @@ createApp({
         resolveComponent: require("./componentResolver"),
     })
 }).use(plugin)
+  .use(ZiggyVue, Ziggy)
     .mount(el!);
 

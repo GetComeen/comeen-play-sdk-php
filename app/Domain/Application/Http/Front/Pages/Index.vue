@@ -62,8 +62,9 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="app in applications">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
+<!--                            <Link as="tr" :href="/applications/+ app.id" v-for="app in applications" class="cursor-pointer hover:bg-gray-50">-->
+                              <td class="px-6 py-4 whitespace-nowrap">
+                                  <div class="flex items-center">
                                         <div class="flex-shrink-0 h-6 w-5">
                                             <i :class="app.logo" class="h-10 w-10 rounded-full"></i>
                                         </div>
@@ -92,12 +93,13 @@
                                   {{ app.api_level }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                  <Link :href="/applications/+ app.id" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                  <Link :href="/applications/+ app.id" class="text-indigo-600 hover:text-indigo-900"><i class="fa fa-edit"></i></Link>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                  <span @click="openDeleteModal(app)" class="text-red-600 hover:text-red-900 cursor-pointer">Delete</span>
+                                  <span @click="openDeleteModal(app)" class="text-red-600 hover:text-red-900 cursor-pointer"><i class="fa fa-trash"></i></span>
                                 </td>
-                            </tr>
+<!--                              </Link>-->
+                              </tr>
                             </tbody>
                         </table>
                     </div>
@@ -234,29 +236,8 @@ import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
+import { Application } from "@/types/generated";
 
-export interface Application {
-  id: number | string,
-  name: string,
-  description: string,
-  type: string,
-  logo: string,
-  url: string,
-  import_type: string,
-  options: ApplicationOptions,
-  version: string,
-  api_level: number,
-  active: boolean,
-  channel: string
-}
-
-export interface ApplicationOptions {
-  path: string,
-  author: {
-    name: string,
-    email: string
-  }
-}
 
 export default defineComponent({
     layout: App,
