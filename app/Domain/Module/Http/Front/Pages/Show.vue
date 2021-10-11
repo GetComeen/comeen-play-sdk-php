@@ -88,9 +88,6 @@
       </dl>
     </div>
   </div>
-<!--  <div v-if="loaded" class="default shadow mt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">-->
-<!--    <GenericSlide :module="slideModule"></GenericSlide>-->
-<!--  </div>-->
 
 </template>
 <script lang="ts">
@@ -99,7 +96,6 @@ import {inject, defineComponent, PropType, h, defineAsyncComponent, reactive, on
 import App from "@/Layouts/App.vue";
 import { Link } from '@inertiajs/inertia-vue3';
 //@ts-ignore
-import GenericSlide from "@/Components/GenericSlide.vue";
 import { Module } from "@/types/generated";
 import {IModule, ISlideContext, SlideModule, SlideModuleConstructor} from "dynamicscreen-sdk-js";
 
@@ -109,7 +105,6 @@ export default defineComponent({
     module: {type: Object as PropType<Module>, required: true},
   },
   components: {
-    GenericSlide,
     Link,
   },
   setup(props, ctx) {
