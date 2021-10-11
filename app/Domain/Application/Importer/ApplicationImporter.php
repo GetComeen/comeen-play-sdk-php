@@ -99,9 +99,10 @@ abstract class ApplicationImporter
         $app->import_type = $this->type;
         $app->save();
 
-//        if (Str::startWith($app->logo, './')) {
-//            Storage::put();
-//        }
+        if (Str::startWith($app->logo, './')) {
+            $filename = pathinfo($app->logo, PATHINFO_FILENAME);
+            Storage::put($filename, $app->logo);
+        }
 
         return $app;
     }

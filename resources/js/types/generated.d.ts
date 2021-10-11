@@ -17,7 +17,7 @@ name: string;
 api_token: string | null;
 channel: string;
 active: boolean;
-applications: Application;
+applications: Application[];
 id: number;
 __exists: boolean;
 };

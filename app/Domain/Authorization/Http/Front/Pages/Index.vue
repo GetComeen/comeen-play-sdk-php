@@ -452,7 +452,7 @@ export default defineComponent({
       const openUpdateModal = ((authorization: Authorization) => {
         activeAuthorization = authorization;
         form.name = authorization.name;
-        form.applications = authorization.applications?.map((app) => {
+        form.applications = authorization.applications?.map((app: Application) => {
           return app.id;
         });
         form.channel = authorization.channel;

@@ -13,6 +13,6 @@ class AuthorizationDTO extends DTO
     public ?string $api_token;
     public string $channel;
     public bool $active;
-    #[LiteralTypeScriptType('Application')]
+    #[LiteralTypeScriptType('Application[]')]
     public ?array $applications;
 }

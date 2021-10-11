@@ -65,9 +65,7 @@
 <!--                            <Link as="tr" :href="/applications/+ app.id" v-for="app in applications" class="cursor-pointer hover:bg-gray-50">-->
                               <td class="px-6 py-4 whitespace-nowrap">
                                   <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-6 w-5">
-                                            <i :class="app.logo" class="h-10 w-10 rounded-full"></i>
-                                        </div>
+                                        <Logo :logo="app.logo" alt="application's icon" class="h-8 w-8 font-size-20 fa-lg rounded-full"></Logo>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">
                                                 {{ app.name }}
@@ -234,6 +232,7 @@
 import { defineComponent, toRef, Ref, PropType, reactive, ref } from "vue";
 import App from "@/Layouts/App.vue";
 import FormModal from "@/Components/Modals/FormModal.vue";
+import Logo from "@/Components/Logo.vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 import { Application } from "@/types/generated";
@@ -241,7 +240,7 @@ import { Application } from "@/types/generated";
 
 export default defineComponent({
     layout: App,
-    components: { FormModal, Link },
+    components: { FormModal, Link, Logo },
     props: {
       applications: {
         type: Array as PropType<Application[]>,

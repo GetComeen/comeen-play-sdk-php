@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class Application extends Model
@@ -94,6 +95,15 @@ class Application extends Model
     public function getDescriptionAttribute($value)
     {
         return $this->i18n->getTranslation($value);
+    }
+
+    public function getLogoAttribute($key)
+    {
+        $value = $this->i18n->getTranslation($key);
+        if (Str::startsWith($value, './')) {
+            $value = asset(pathinfo($value, PATHINFO_BASENAME));
+        }
+        return $value;
     }
 
     public function getOption($key)
