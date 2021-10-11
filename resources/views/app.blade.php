@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <link href="/fontawesome/css/all.css" rel="stylesheet">
     <script src="{{ mix('/js/app.js') }}" defer></script>
+    <script src="https://kit.fontawesome.com/41a6919968.js" crossorigin="anonymous"></script>
 </head>
 <script lang="scss">
 {{--@import '@vueform/multiselect/themes/tailwind.scss'--}}
