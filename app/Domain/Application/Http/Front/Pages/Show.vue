@@ -10,9 +10,12 @@
         </p>
       </div>
       <div class="flex space-x-3 md:mt-0 md:ml-4">
-        <button @click="" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+        <Link as="button" :href="route('applications.sync', application.id)" type="button" class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
           Sync
-        </button>
+        </Link>
+<!--        <button @click="" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">-->
+<!--          Sync-->
+<!--        </button>-->
         <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
           Some Thing
         </button>
@@ -120,6 +123,7 @@
 import {provide, defineComponent, toRef, Ref, PropType, reactive} from "vue";
 import App from "@/Layouts/App.vue";
 import { Application, Module } from "@/types/generated";
+import { Link } from "@inertiajs/inertia-vue3"
 
 interface thing {
     name: string,
@@ -128,6 +132,7 @@ interface thing {
 
 export default defineComponent({
     layout: App,
+    components: { Link },
     props: {
         application: { type: Object as PropType<Application>, required: true },
     },

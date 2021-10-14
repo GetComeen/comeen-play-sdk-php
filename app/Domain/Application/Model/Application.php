@@ -102,7 +102,7 @@ class Application extends Model
     {
         $value = $this->i18n->getTranslation($key);
         if (Str::startsWith($value, './')) {
-            $value = asset(pathinfo($value, PATHINFO_BASENAME));
+            $value = asset('storage/'.pathinfo($value, PATHINFO_BASENAME));
         }
         return $value;
     }

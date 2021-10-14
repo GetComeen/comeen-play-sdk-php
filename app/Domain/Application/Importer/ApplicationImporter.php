@@ -135,7 +135,7 @@ abstract class ApplicationImporter
         if (Str::startsWith($this->getAttribute('logo'), './')) {
             $filename = pathinfo($this->getAttribute('logo'), PATHINFO_BASENAME);
             $file = Storage::disk('apps')->get($app->type .'/'. $app->version .'/'. $this->getAttribute('logo'));
-            Storage::put($filename, $file);
+            Storage::disk('public')->put($filename, $file);
         }
 
         $app->save();

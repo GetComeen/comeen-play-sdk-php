@@ -6,6 +6,7 @@ use App\Domain\Application\Importer\ApplicationImporterInstance;
 use App\Domain\Application\Model\Application;
 use App\DTO\ApplicationDTO;
 use App\Http\Controllers\Controller;
+use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -34,16 +35,7 @@ class ApplicationController extends Controller
 
     public function sync(Application $application): \Illuminate\Http\RedirectResponse
     {
-        if ($application->import_type === 'url') {
-            $gitWrapper = new GitWrapper('git');
-            $git = $gitWrapper->workingCopy($app->getOption('path'));
-
-            Log::debug('before pull');
-            $git->pull();
-            Artisan::call('generate:webpack-config '. $app->id);
-            Artisan::call('build:application '. $app->id);
-            Log::debug('Modules are built');
-        }
+        Artisan::call("application:sync $application->id");
 
         return Redirect::route('applications.show', $application->id);
     }
