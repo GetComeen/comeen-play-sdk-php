@@ -4,17 +4,19 @@
 namespace App\Domain\Application\Importer;
 
 
+use App\Domain\Application\Model\Application;
+
 class ApplicationImporterInstance
 {
-    public static function get($type)
+    public static function get($type, Application $app = null)
     {
         switch($type) {
             case 'url':
-                return new UrlImporter();
+                return new UrlImporter($app);
             case 'zip':
-                return new ZipImporter();
+                return new ZipImporter($app);
             case 'path':
-                return new PathImporter();
+                return new PathImporter($app);
             default:
                 return 'sorry dude';
                 break;

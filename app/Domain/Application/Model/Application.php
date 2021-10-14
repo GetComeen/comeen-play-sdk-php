@@ -35,6 +35,7 @@ class Application extends Model
         'version',
         'channel',
         'api_level',
+        'color',
         'type',
         'author',
         'import_type',

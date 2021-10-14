@@ -38,9 +38,12 @@ class InitAppServer extends Command
      */
     public function handle()
     {
-        exec('sudo apt -y install curl nodejs build-essential git-all composer');
+        exec('sudo apt -y install curl nodejs build-essential git-all composer yarn');
         exec('composer install -y');
-//        Artisan::call('migrate', ['--queue' => 'default']);
+        exec('yarn install');
+        Artisan::call('migrate', ['--queue' => 'default']);
+        Artisan::call('storage:link');
+        exec('yarn production');
         return 0;
     }
 }

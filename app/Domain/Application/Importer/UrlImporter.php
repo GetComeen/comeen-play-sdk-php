@@ -4,19 +4,24 @@
 namespace App\Domain\Application\Importer;
 
 
+use App\Domain\Application\Model\Application;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\GitWrapper\GitWrapper;
 
 class UrlImporter extends ApplicationImporter
 {
-    public function __construct()
+    public function __construct(Application $app = null)
     {
+        parent::__construct($app);
         $this->type = 'url';
     }
 
-    public function fetchApp($value)
+    public function fetch($value)
     {
         $disk = Storage::disk('apps');
         $disk->makeDirectory('/tmp');
@@ -36,5 +41,18 @@ class UrlImporter extends ApplicationImporter
         exec("rm -rf $this->path");
 
         return $app_path;
+    }
+
+    public function update()
+    {
+//        $disk = Storage::disk('apps')->getAdapter()->getPathPrefix() . "/$identifier/$version";
+        $gitWrapper = new GitWrapper('git');
+        $git = $gitWrapper->workingCopy($this->app->getOption('path'));
+
+        Log::debug('before pull');
+        $git->pull();
+
+        $this->path = $this->app->getOption('path');
+        $this->content = Yaml::parseFile($this->path.'/manifest.yml');
     }
 }

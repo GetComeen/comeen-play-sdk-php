@@ -16,7 +16,7 @@ class GenerateWebpackConfig extends Command
      * @var string
      */
     protected $signature = 'generate:webpack-config
-                            {app-id : applications\'s id}';
+                            {app_id : applications\'s id}';
 
     /**
      * The console command description.
@@ -42,7 +42,7 @@ class GenerateWebpackConfig extends Command
      */
     public function handle(): int
     {
-        $app = Application::find($this->argument('app-id'));
+        $app = Application::find($this->argument('app_id'));
         $app->modules->each(function ($module) use ($app) {
             $lib = $app->type .'.'. $module->type .'.'. $module->identifier .'::'. $app->version;
             $path = $module->getOption('vue.component');

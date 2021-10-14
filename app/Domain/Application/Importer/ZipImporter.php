@@ -4,17 +4,19 @@
 namespace App\Domain\Application\Importer;
 
 
+use App\Domain\Application\Model\Application;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Yaml\Yaml;
 
 class ZipImporter extends ApplicationImporter
 {
-    public function __construct()
+    public function __construct(Application $app = null)
     {
+        parent::__construct($app);
         $this->type = 'url';
     }
 
-    public function fetchApp($value)
+    public function fetch($value)
     {
         $this->value = $value;
 
@@ -42,5 +44,10 @@ class ZipImporter extends ApplicationImporter
         }
 
         return $app_path;
+    }
+
+    public function update()
+    {
+        // TODO: Implement sync() method.
     }
 }

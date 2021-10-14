@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Domain\Application\Model\Application;
+use App\Domain\Build\Model\Build;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
@@ -19,7 +20,7 @@ class BuildApplication extends Command
      * @var string
      */
     protected $signature = 'build:application
-                            {app-id : applications\'s id}';
+                            {app_id : applications\'s id}';
 
     /**
      * The console command description.
@@ -43,36 +44,28 @@ class BuildApplication extends Command
      *
      * @return int
      */
-//    public function handle(): int
-//    {
-//        $app = Application::find($this->argument('app-id'));
-//
-//        $app->modules->each(function ($module) use ($app) {
-//            $file = $app->getOption('path') .'/'. $module->identifier .'.webpack.config.js';
-//            $process = Process::fromShellCommandline('webpack --config='. $file);
-//            echo 'webpack --config='. $file ."\n";
-//            $process->run();
-//
-//            $file = $app->getOption('path') .'/'. $module->identifier .'-options.webpack.config.js';
-//            $process = Process::fromShellCommandline('webpack --config='. $file);
-//            echo 'webpack --config='. $file ."\n";
-//            $process->run();
-//        });
-//
-//        return $app->id;
-//    }
-
     public function handle(): int
     {
-        $app = Application::find($this->argument('app-id'));
+        $app = Application::find($this->argument('app_id'));
 
-        if (Str::startsWith($app->logo, './')) {
-            $filename = pathinfo($app->logo, PATHINFO_BASENAME);
-            $path = $app->getOption('path') . Str::of($app->logo)->ltrim('.');
-            $file = File::get($path);
-            Storage::disk('public')->put($filename, $file);
-        }
+        $app->modules->each(function ($module) use ($app) {
+            $file = $app->getOption('path') .'/'. $module->identifier .'.webpack.config.js';
+            $process = Process::fromShellCommandline('webpack --config='. $file);
+            echo "webpack --config=$file \n";
+            $exit_code = $process->run();
+            if ($exit_code !== 0) {
+                echo "Fail to build artifacts. exit code $exit_code";
+            }
 
-        return true;
+            $file = $app->getOption('path') .'/'. $module->identifier .'-options.webpack.config.js';
+            $process = Process::fromShellCommandline('webpack --config='. $file);
+            echo 'webpack --config='. $file ."\n";
+            $exit_code = $process->run();
+            if ($exit_code !== 0) {
+                echo "Fail to build artifacts. exit code $exit_code";
+            }
+        });
+
+        return $app->id;
     }
 }

@@ -16,23 +16,22 @@ use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\Facades\Storage;
 
 
-class ImportApplication extends Command
+class SyncApplication extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'application:import
-                            {--type=url : [url, path, zip]}
-                            {src=null : application\'s path or url according to the type of import}';
+    protected $signature = 'application:sync
+                            {app_id : applications\'s id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import an application for the given path/url.';
+    protected $description = 'Synchronize an application for the given id.';
 
     /**
      * Create a new command instance.
@@ -51,21 +50,24 @@ class ImportApplication extends Command
      */
     public function handle(): int
     {
-        $type = $this->option('type');
-        $src = $this->argument('src');
+        $app_id = $this->argument('app_id');
+        $app = Application::with(['modules', 'bundles', 'builds.privileges', 'authorizations'])->find($app_id);
 
-        echo "$type: $src\n";
-
-        try {
-            $importer = ApplicationImporterInstance::get($type);
-            $app = $importer->import($src);
-        } catch (\Exception $e) {
-            $importer->cancelImport();
-            echo "Application import has failed: ". $e->getMessage() ."\n";
+        if (!$app) {
             return 0;
         }
 
-        echo "App \"$app->name\" has been successfully imported\n";
+        echo "Syncing: $app->type\n";
+        try {
+            $importer = ApplicationImporterInstance::get($app->import_type, $app);
+            $app = $importer->sync();
+        } catch (\Exception $e) {
+//            $importer->cancelImport();
+            echo "Application sync has failed: ". $e->getMessage() ."\n";
+            return 0;
+        }
+
+        echo "App \"$app->type\" has been successfully synced\n";
 
         return $app->id;
     }

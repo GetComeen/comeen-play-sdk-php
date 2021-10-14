@@ -18,10 +18,12 @@ class CreateModulesTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('description');
+            $table->string('color');
             $table->string('identifier');
             $table->foreignId('application_id')
                 ->constrained('applications')
                 ->onDelete('cascade');
+            $table->json('config');
             $table->json('options');
             $table->timestamps();
         });
