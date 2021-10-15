@@ -17,7 +17,7 @@ class AuthorizationController extends Controller
     {
         $authorizations = Authorization::with('applications')->get();
         $applications = Application::all();
-        dd(route('applications.index'));
+
         return Inertia::render("Authorization::Index", [
             'authorizations' => AuthorizationDTO::collection($authorizations),
             'applications' => ApplicationDTO::collection($applications)
@@ -26,7 +26,6 @@ class AuthorizationController extends Controller
 
     public function store()
     {
-//        dd(request()->all());
         $data = request()->validate([
             'name' => ['required', 'max:40', 'min:2'],
             'channel' => ['required', 'in:stable,rc,beta,alpha'],
