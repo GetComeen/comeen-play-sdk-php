@@ -93,7 +93,7 @@ abstract class ApplicationImporter
 
     private function install_node_modules(): int
     {
-        $process = Process::fromShellCommandline('cd ' .$this->path. ' && npm install');
+        $process = Process::fromShellCommandline('cd ' .$this->path. ' && yarn install');
         return $process->run(null, ['PATH' => ':/usr/local/bin']);
     }
 
@@ -130,7 +130,7 @@ abstract class ApplicationImporter
         $app->channel = $this->getAttribute('channel');
         $app->api_level = $this->getAttribute('api-level');
         $app->import_type = $this->type;
-        $app->config = $this->content;
+        $app->config = json_encode($this->content);
 
         if (Str::startsWith($this->getAttribute('logo'), './')) {
             $filename = pathinfo($this->getAttribute('logo'), PATHINFO_BASENAME);
@@ -139,7 +139,6 @@ abstract class ApplicationImporter
         }
 
         $app->save();
-
         return $app;
     }
 
@@ -149,7 +148,7 @@ abstract class ApplicationImporter
         collect($modules)->each(function ($module) {
             $existingModule = $this->app->modules->firstWhere('identifier', Arr::get($module, 'identifier'));
             $mod = $existingModule ?? new Module($module);
-            $mod->config = $module;
+            $mod->config = json_encode($module);
             $mod->options = [
                 'vue' => Arr::get($module, 'vue'),
                 'php' => Arr::get($module, 'php'),
@@ -190,7 +189,7 @@ abstract class ApplicationImporter
         $privileges_list = collect($this->getAttribute('privileges'));
         $privileges_list->each(function ($privileges, $type) {
             $priv_list = collect($privileges)->map(function ($privilege) use ($type) {
-                $existingPrivilege = optional($this->app->builds->first())->privileges->firstWhere('identifier', Arr::get($privilege, 'identifier'));
+                $existingPrivilege = optional($this->builds->privileges)->firstWhere('identifier', Arr::get($privilege, 'identifier'));
                 $priv = $existingPrivilege ?? new Privilege();
                 $priv->identifier = Arr::get($privilege, 'identifier');
                 $priv->type = $type;
@@ -210,7 +209,7 @@ abstract class ApplicationImporter
                 return $priv->id;
             });
 
-            $this->app->builds->first()->privileges()->sync($priv_list);
+            $this->builds->privileges()->sync($priv_list);
         });
 
         return $privileges_list;
