@@ -25,7 +25,7 @@ class Helper
         try {
             return new i18Next($lang, $path);
         } catch (\Exception $e) {
-            dd('i18next exception init model translation', $e, $lang, $path);
+//            dd('i18next exception init model translation', $e, $lang, $path);
         }
     }
 }
