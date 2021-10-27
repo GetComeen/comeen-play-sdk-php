@@ -10,7 +10,8 @@
         </p>
       </div>
       <div class="flex space-x-3 md:mt-0 md:ml-4">
-        <Link as="button" :href="syncUrl(application.id)" type="button" class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+<!--        <Link as="button" :href="syncUrl(application.id)" type="button" class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">-->
+          <Link as="button" :href="route('applications.sync', application.id)" type="button" class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
           Sync
         </Link>
 <!--        <button @click="" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">-->
@@ -123,7 +124,6 @@
 import {provide, defineComponent, toRef, Ref, PropType, reactive, computed} from "vue";
 import App from "@/Layouts/App.vue";
 import { Application, Module } from "@/types/generated";
-import route from "ziggy";
 import { Link } from "@inertiajs/inertia-vue3"
 
 interface thing {
@@ -139,9 +139,11 @@ export default defineComponent({
     },
     setup(props) {
       // const modules = reactive(props.application.modules);
-      const syncUrl = computed(appId => route('applications.sync', appId));
+      const syncUrl = computed(appId => `https://app-server.dynamicscren.services/applications/${appId}/sync`);
+      // const syncUrl = computed(appId => route('applications.sync', appId));
 
-      return { syncUrl };
+      // return { syncUrl };
+      return { syncUrl }
     }
 })
 </script>
