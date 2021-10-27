@@ -97,6 +97,12 @@ abstract class ApplicationImporter
         return $process->run(null, ['PATH' => ':/usr/local/bin']);
     }
 
+    private function install_composer_packages(): int
+    {
+        $process = Process::fromShellCommandline('cd ' .$this->path. ' && composer install');
+        return $process->run(null, ['PATH' => ':/usr/local/bin']);
+    }
+
     private function build_webpack_artifacts()
     {
         Artisan::call('generate:webpack-config '. $this->app->id);
@@ -148,12 +154,14 @@ abstract class ApplicationImporter
         collect($modules)->each(function ($module) {
             $existingModule = $this->app->modules->firstWhere('identifier', Arr::get($module, 'identifier'));
             $mod = $existingModule ?? new Module($module);
-            $mod->config = json_encode($module);
-            $mod->options = [
-                'vue' => Arr::get($module, 'vue'),
-                'php' => Arr::get($module, 'php'),
-                'node' => Arr::get($module, 'node'),
-            ];
+            $mod->config = $module;
+
+//            $mod->options = [
+//                'vue' => Arr::get($module, 'vue'),
+//                'php' => Arr::get($module, 'php'),
+//                'node' => Arr::get($module, 'node'),
+//            ];
+            $mod->options = Arr::get($module, 'options', []);
             $mod->application_id = $this->app->id;
             $mod->save();
         });

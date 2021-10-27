@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.0",
         "aiken/i18next": "dev-master",
+        "dynamicscreen/sdk-php": "@dev",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -22,6 +23,7 @@
         "socialiteproviders/gitlab": "^4.1",
         "socialiteproviders/google": "^4.1",
         "socialiteproviders/microsoft": "^4.1",
+        "socialiteproviders/unsplash": "^4.1",
         "socialiteproviders/zoho": "^4.1",
         "spatie/data-transfer-object": "^3.7",
         "spatie/enum": "^3.9",
@@ -52,7 +54,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
+            "App\\": "app",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
@@ -67,7 +69,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./",
+            "url": "./dynamicscreen/sdk-php",
             "options": {
                 "symlink": true
             }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Helper
 {
-    public static function getActiveLanguage()
+    public static function get_active_language()
     {
         $lang = 'en';
 
@@ -21,7 +21,7 @@ class Helper
         return $lang;
     }
 
-    public static function initModelTranslation($lang, $path) {
+    public static function init_model_translation($lang, $path) {
         try {
             return new i18Next($lang, $path);
         } catch (\Exception $e) {

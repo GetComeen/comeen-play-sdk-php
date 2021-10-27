@@ -59,4 +59,11 @@ return [
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => env('FACEBOOK_REDIRECT_URI')
     ],
+
+    'unsplash' => [
+        'client_id' => env('UNSPLASH_CLIENT_ID'),
+        'client_secret' => env('UNSPLASH_CLIENT_SECRET'),
+        'app_name' => env('UNSPLASH_APP_NAME'),
+        'redirect' => env('UNSPLASH_REDIRECT_URI')
+    ],
 ];

@@ -21,11 +21,12 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-            'SocialiteProviders\\GitLab\\GitLabExtendSocialite@handle',
-            'SocialiteProviders\\GitHub\\GitHubExtendSocialite@handle',
-            'SocialiteProviders\\Google\\GoogleExtendSocialite@handle',
-            'SocialiteProviders\\Microsoft\\MicrosoftExtendSocialite@handle',
-            'SocialiteProviders\\Facebook\\FacebookExtendSocialite@handle',
+            \SocialiteProviders\GitLab\GitLabExtendSocialite::class.'@handle',
+            \SocialiteProviders\GitHub\GitHubExtendSocialite::class.'@handle',
+            \SocialiteProviders\Google\GoogleExtendSocialite::class.'@handle',
+            \SocialiteProviders\Microsoft\MicrosoftExtendSocialite::class.'@handle',
+            \SocialiteProviders\Facebook\FacebookExtendSocialite::class.'@handle',
+            \SocialiteProviders\Unsplash\UnsplashExtendSocialite::class.'@handle',
         ],
     ];
 

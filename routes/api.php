@@ -19,6 +19,7 @@ Route::githubWebhooks('webhooks/github');
 
 Route::namespace('App\Domain\API\Controllers\\')
 //    ->middleware(['api'])
+    ->name('api.')
     ->middleware(['auth:api'])
     ->group(function () {
         Route::get('/me', function (Request $request) {
@@ -29,20 +30,28 @@ Route::namespace('App\Domain\API\Controllers\\')
             return DB::table('settings')->pluck('value', 'key');
         });
 
-        Route::get('/applications/{app}/modules/{module}', "ModuleController@show");
-        Route::get('/applications/{app}/modules', "ModuleController@index");
+        Route::get('/applications/{app}/modules', "ModuleController@index")->name('modules.index');
+        Route::get('/applications/{app}/modules/{module}', "ModuleController@show")->name('modules.show');
 
         Route::get('/applications', "ApplicationController@index")->name('applications.index');
         Route::get('/applications/{app}', "ApplicationController@show")->name('applications.show');
+
         Route::get('/applications/{app}/builds', "ApplicationController@getBuilds")->name('applications.builds');
         Route::get('/applications/{app}/builds/{identifier}', "ApplicationController@getBuild")->name('applications.build');
+
+        Route::get('/applications/{app}/modules/{module}/connect', "AuthProviderController@connect")->name('oauth.connect');
+        Route::get('/applications/{app}/modules/{module}/test', "AuthProviderController@test")->name('oauth.test');
+        Route::get('/applications/{app}/modules/{module}/callback','AuthProviderController@callback')->name('oauth.callback');
 
         Route::get('/bundles', "BundleController@index");
         Route::get('/bundles/{bundle}', "BundleController@show");
 
-        Route::get('/auth-providers/{provider}', "AuthProviderController@initiate")->name('initiate');
-        Route::get('/auth-providers/{provider}/test', "AuthProviderController@test")->name('test');
-        Route::get('/auth-providers/{provider}/me', "AuthProviderController@userInfo")->name('userInfo');
-        Route::post('/auth-providers/{provider}', "AuthProviderController@connect")->name('validate');
+        Route::post('/full', "ModuleResolverController@full");
+
+
+//        Route::get('/auth-providers/{provider}', "AuthProviderController@initiate")->name('initiate');
+//        Route::get('/auth-providers/{provider}/test', "AuthProviderController@test")->name('test');
+//        Route::get('/auth-providers/{provider}/me', "AuthProviderController@userInfo")->name('userInfo');
+//        Route::post('/auth-providers/{provider}', "AuthProviderController@connect")->name('validate');
 
     });

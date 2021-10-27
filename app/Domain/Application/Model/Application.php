@@ -57,6 +57,7 @@ class Application extends Model
      */
     protected $casts = [
         'options' => 'json',
+        'config' => 'json',
     ];
 
     protected static function boot()
@@ -64,7 +65,7 @@ class Application extends Model
         parent::boot();
 
         static::retrieved(function($model) {
-            $model->i18n = Helper::initModelTranslation(Helper::getActiveLanguage(), $model->getTranslationFilesPath());
+            $model->i18n = Helper::init_model_translation(Helper::get_active_language(), $model->getTranslationFilesPath());
         });
     }
 

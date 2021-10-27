@@ -3,49 +3,75 @@
 namespace App\Domain\API\Controllers;
 
 use App\Domain\Application\Model\Application;
-use App\Domain\Build\Model\Build;
-use App\Domain\Bundle\Model\Bundle;
 use App\Domain\Module\Model\Module;
-use App\Domain\Resource\Model\Resource;
 use App\Http\Controllers\Controller;
+use Apps\DynamicScreen\Today\AuthProvider\UnsplashAuthProviderHandler;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
-use Laravel\Socialite\Facades\Socialite;
 
 class AuthProviderController extends Controller
 {
     use HasApiTokens;
 
-    public function initiate($provider): \Illuminate\Http\JsonResponse
+    public function initiate(Application $app, Module $module): \Illuminate\Http\JsonResponse
     {
         $token = Str::random(50);
+
         return response()->json([
-//            'redirect_url' => $url,
             'token' => $token,
         ]);
     }
 
-    public function connect($provider)
+    public function connect(Application $app, Module $module)
     {
+        if ($module->type !== 'auth-provider') {
+            return response()->json(['success' => false, 'data' => 'The following module is not an auth provider']);
+        }
+
         $data = request()->validate([
-            'token' => ['required', 'string', 'size:50'],
-            'callback_url' => ['required', 'url']
+            'redirect_url' => ['string', 'url'],
         ]);
 
-        $clientId = config("services.$provider.client_id");
-        $clientSecret = config("services.$provider.client_id");
-        $redirectUrl = $data['callback_url'];
-        $config = new \SocialiteProviders\Manager\Config($clientId, $clientSecret, $redirectUrl);
+//        if (!$provider) {
+//            return response()->json(['success' => false, 'data' => 'The provided provider does not exist for the following module']);
+//        }
+        $callbackUrl = route('api.oauth.callback', [$app, $module, 'redirect_url' => $data['redirect_url']]);
+        $authProviderHandler = $module->getHandler();
 
-        return Socialite::driver($provider)->setConfig($config)->stateless(true)->redirect();
-
-        return response()->json("Cannot redirect to the $provider auth provider");
+        return redirect($authProviderHandler->signin($callbackUrl));
     }
 
-    public function test($provider): \Illuminate\Http\JsonResponse
+    public function test(Application $app, Module $module): \Illuminate\Http\JsonResponse
     {
+        $data = request()->validate([
+            'access_token' => ['required', 'string']
+        ]);
 
-        return response()->json(['success' => true, 'wip' => true]);
+        $handler = $module->getHandler($data);
+        $status = $handler->testConnection();
+
+        if (!$status) {
+            response()->json(['success' => false, 'data' => null]);
+        }
+
+        return response()->json(['success' => true, 'data' => $status]);
+    }
+
+    public function callback(Application $app, Module $module)
+    {
+        $data = request()->validate([
+            'redirect_url' => ['required']
+        ]);
+
+        $provider = $module->getOption('provider');
+
+        if (!$provider) return response()->json(['success' => false]);
+
+        $callbackUrl = route('api.oauth.callback', [$app, $module, 'redirect_url' => $data['redirect_url']]);
+
+        $handler = $module->getHandler();
+
+        return $handler->callback(request(), $callbackUrl);
     }
 
     public function userInfo($provider): \Illuminate\Http\JsonResponse

@@ -1,0 +1,74 @@
+<?php
+
+namespace DynamicScreen\SdkPhp\Modules;
+
+use Illuminate\Support\Arr;
+use DynamicScreen\SdkPhp\Interfaces\ISlide;
+
+class SlideModule implements ISlide
+{
+    private array $options = [];
+
+    public function __construct(array $options)
+    {
+        $this->options = $options;
+    }
+
+    public function getName()
+    {
+        return $this->getOption('name');
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    public function getOption($name, $default = null)
+    {
+        return Arr::get($this->getOptions(), $name, $default);
+    }
+
+    public function setOption($name, $value): self
+    {
+        $options = $this->options;
+        if (Arr::exists($options, $name)) {
+            Arr::forget($options, $name);
+        }
+        Arr::set($options, $name, $value);
+        $this->options = $options;
+        return $this;
+    }
+
+    public function forgetOption($key)
+    {
+        $options = $this->options;
+        Arr::forget($options, $key);
+        $this->options = $options;
+    }
+//
+//    public function getTriggerableAttribute(){
+//        return $this->slide_set->triggerable ?? false;
+//    }
+//
+//    public function getTriggerSettingsAttribute(){
+//        if(isset($this->slide_set->triggerable) && $this->slide_set->triggerable){
+//            $trigger_settings = $this->slide_set->trigger_settings;
+//            $trigger_settings['max_duration'] = (int) ($trigger_settings['max_duration'] ?? 5);
+//            $trigger_settings['proximity_range'] = (int) ($trigger_settings['proximity_range'] ?? 1);
+//            $trigger_settings['repeat_content'] = boolval($trigger_settings['repeat_content'] ?? false);
+//            return $trigger_settings;
+//        }
+//        return [];
+//    }
+//
+//    public function getFirstTriggerIdAttribute()
+//    {
+//        if(empty($this->trigger_ids)){
+//            return null;
+//        }
+//
+//        return $this->trigger_ids[array_key_first($this->trigger_ids)];
+//    }
+
+}
