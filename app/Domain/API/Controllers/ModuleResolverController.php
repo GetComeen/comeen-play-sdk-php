@@ -13,11 +13,11 @@ class ModuleResolverController extends Controller
 {
     public function full(Request $request): JsonResponse
     {
-        $full = collect([]);
+        $full = [];
 
         $slides = request()->all();
 
-        collect(request()->all())->each(function ($slideData, $key) use ($full) {
+        collect(request()->all())->each(function ($slideData, $key) use (&$full) {
             $module = Module::whereIdentifier(Arr::get($slideData, 'module'))->firstOrFail();
 
             if (!Arr::get($slideData, 'options')) {
@@ -36,14 +36,13 @@ class ModuleResolverController extends Controller
 
             $data = $slideHandler->fetch(new SlideModule($options));
 
-            $full->add([
-                $key => [
+            $full[$key] = [
                     'data' => $data,
                     'options' => $options
-                ]
-            ]);
+                ];
         });
 
         return response()->json($full);
+
     }
 }
