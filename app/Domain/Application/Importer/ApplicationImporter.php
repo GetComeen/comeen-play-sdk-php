@@ -52,6 +52,11 @@ abstract class ApplicationImporter
 
     public function sync(): Application
     {
+        if (!$this->app->auto_sync) {
+            echo "App version has changed, new app has been created instead";
+            return $this->app;
+        }
+
         $this->update();
         if ($this->versionHasChanged()) {
             $this->import($this->app->getOption('repository'));

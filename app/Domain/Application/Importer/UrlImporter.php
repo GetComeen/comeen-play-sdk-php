@@ -32,7 +32,7 @@ class UrlImporter extends ApplicationImporter
 
         $this->content = Yaml::parseFile($this->path.'/manifest.yml');
         $version = $this->getAttribute('version');
-        $identifier = $this->getAttribute('id');
+        $identifier = str_to_psr4($this->getAttribute('id'));
         $dir_path = "/$identifier/$version";
         $disk->makeDirectory($dir_path);
         $disk->makeDirectory("$dir_path/dist");
@@ -45,11 +45,9 @@ class UrlImporter extends ApplicationImporter
 
     public function update()
     {
-//        $disk = Storage::disk('apps')->getAdapter()->getPathPrefix() . "/$identifier/$version";
         $gitWrapper = new GitWrapper('git');
         $git = $gitWrapper->workingCopy($this->app->getOption('path'));
 
-        Log::debug('before pull');
         $git->pull();
 
         $this->path = $this->app->getOption('path');

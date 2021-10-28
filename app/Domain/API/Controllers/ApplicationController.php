@@ -69,6 +69,8 @@ class ApplicationController extends Controller
             $query->where('version', $version);
         })->with('modules')->get()->first();
 
+
+
         if (!$app) {
             return response()->json('No available build for this version');
         }

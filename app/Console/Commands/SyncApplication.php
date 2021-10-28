@@ -53,7 +53,7 @@ class SyncApplication extends Command
         $app_id = $this->argument('app_id');
         $app = Application::with(['modules', 'bundles', 'builds.privileges', 'authorizations'])->find($app_id);
 
-        if (!$app) {
+        if (!$app || !$app->auto_sync) {
             return 0;
         }
 

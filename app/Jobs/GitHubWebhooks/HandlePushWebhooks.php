@@ -29,25 +29,6 @@ class HandlePushWebhooks implements ShouldQueue
         $type =  $this->webhookCall->payload('repository.name');
         $app = Application::where('type', $type)->get()->first();
 
-        if (!$app->auto_sync) {
-            return ;
-        }
-        Log::debug($app->name);
-        $gitWrapper = new GitWrapper('git');
-        $git = $gitWrapper->workingCopy($app->getOption('path'));
-        Log::debug(print_r($git, true));
-        Log::debug(print_r($gitWrapper, true));
-
-        Log::debug('before pull');
-        $git->pull();
-        Log::debug('pulled');
-        Log::debug('generating webpack config');
-
-        Artisan::call('generate:webpack-config '. $app->id);
-        Log::debug('webpack config generated');
-        Log::debug('building modules');
-
-        Artisan::call('build:application '. $app->id);
-        Log::debug('Modules are built');
+        return Artisan::call("application:sync $app->id");
     }
 }

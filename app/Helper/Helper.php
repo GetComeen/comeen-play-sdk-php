@@ -28,4 +28,15 @@ class Helper
 //            dd('i18next exception init model translation', $e, $lang, $path);
         }
     }
+
+    public static function str_to_psr4($str) : string
+    {
+        $psr4 = str_replace('-', '', ucwords($str, '-'));
+
+        if (!$str) {
+            $psr4 = lcfirst($psr4);
+        }
+
+        return $psr4;
+    }
 }
