@@ -207,10 +207,10 @@ abstract class ApplicationImporter
                 $priv->identifier = Arr::get($privilege, 'identifier');
                 $priv->type = $type;
                 $priv->why = Arr::get($privilege, 'why');
-                if ($type === 'needs_account') {
+                if (in_array($type, ['needs_account', 'needs_media'])) {
                     $options = ['type' => Arr::get($privilege, 'type')];
                 } else {
-                    $options = null;
+                    $options = [];
                 }
                 $priv->options = $options;
                 if ($priv->isClean()) {

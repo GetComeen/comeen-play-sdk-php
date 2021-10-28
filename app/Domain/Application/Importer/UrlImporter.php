@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Process\Process;
+use App\Helper\Helper;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\GitWrapper\GitWrapper;
 
@@ -32,7 +33,7 @@ class UrlImporter extends ApplicationImporter
 
         $this->content = Yaml::parseFile($this->path.'/manifest.yml');
         $version = $this->getAttribute('version');
-        $identifier = str_to_psr4($this->getAttribute('id'));
+        $identifier = $this->getAttribute('id');
         $dir_path = "/$identifier/$version";
         $disk->makeDirectory($dir_path);
         $disk->makeDirectory("$dir_path/dist");
