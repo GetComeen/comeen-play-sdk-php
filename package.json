@@ -35,7 +35,7 @@
         "@tailwindcss/forms": "^0.2.1",
         "@types/ziggy-js": "^1.3.0",
         "@vueform/multiselect": "^2.2.0",
-        "dynamicscreen-sdk-js": "^0.0.11",
+        "dynamicscreen-sdk-js": "^0.0.19",
         "htmlspecialchars": "^1.0.5",
         "i18next": "^20.4.0"
     }

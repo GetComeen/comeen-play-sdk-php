@@ -100,7 +100,7 @@ abstract class ApplicationImporter
 
     private function install_node_modules(): int
     {
-        $process = Process::fromShellCommandline('cd ' .$this->path. ' && yarn install');
+        $process = Process::fromShellCommandline('cd ' .$this->path. ' && yarn add dynamicscreek-sdk-js@latest && yarn install');
         return $process->run(null, ['PATH' => ':/usr/local/bin']);
     }
 
