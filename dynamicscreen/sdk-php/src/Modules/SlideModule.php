@@ -7,11 +7,11 @@ use DynamicScreen\SdkPhp\Interfaces\ISlide;
 
 class SlideModule implements ISlide
 {
-    private array $options = [];
+    private array $slide = [];
 
     public function __construct(array $options)
     {
-        $this->options = $options;
+        $this->slide = $options;
     }
 
     public function getName()
@@ -21,7 +21,7 @@ class SlideModule implements ISlide
 
     public function getOptions(): array
     {
-        return $this->options;
+        return Arr::get($this->slide, 'options', []);
     }
 
     public function getOption($name, $default = null)
@@ -29,23 +29,34 @@ class SlideModule implements ISlide
         return Arr::get($this->getOptions(), $name, $default);
     }
 
-    public function setOption($name, $value): self
+    public function getMedias()
     {
-        $options = $this->options;
-        if (Arr::exists($options, $name)) {
-            Arr::forget($options, $name);
-        }
-        Arr::set($options, $name, $value);
-        $this->options = $options;
-        return $this;
+        return Arr::get($this->slide, 'medias', []);
     }
 
-    public function forgetOption($key)
+    public function getAccounts()
     {
-        $options = $this->options;
-        Arr::forget($options, $key);
-        $this->options = $options;
+        return Arr::get($this->slide, 'accounts', []);
+
     }
+//
+//    public function setOption($name, $value): self
+//    {
+//        $options = $this->options;
+//        if (Arr::exists($options, $name)) {
+//            Arr::forget($options, $name);
+//        }
+//        Arr::set($options, $name, $value);
+//        $this->options = $options;
+//        return $this;
+//    }
+//
+//    public function forgetOption($key)
+//    {
+//        $options = $this->options;
+//        Arr::forget($options, $key);
+//        $this->options = $options;
+//    }
 //
 //    public function getTriggerableAttribute(){
 //        return $this->slide_set->triggerable ?? false;

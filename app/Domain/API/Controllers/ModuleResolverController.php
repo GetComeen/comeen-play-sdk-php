@@ -38,7 +38,7 @@ class ModuleResolverController extends Controller
             $handler = $module->getHandler($module);
             $slideHandler = new $handler($module);
 
-            $data = $slideHandler->fetch(new SlideModule($options));
+            $data = $slideHandler->fetch(new SlideModule($slideData));
 
             $full[$key] = [
                     'data' => $data,
