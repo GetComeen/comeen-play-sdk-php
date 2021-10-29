@@ -29,9 +29,9 @@ class SlideModule implements ISlide
         return Arr::get($this->getOptions(), $name, $default);
     }
 
-    public function getMedias()
+    public function getMedias($key)
     {
-        return Arr::get($this->slide, 'medias', []);
+        return Arr::get($this->slide, "medias.$key", []);
     }
 
     public function getAccounts()

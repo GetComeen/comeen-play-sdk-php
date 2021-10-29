@@ -40,11 +40,13 @@ class ModuleResolverController extends Controller
 
             $data = $slideHandler->fetch(new SlideModule($slideData));
 
+
             $full[$key] = [
                     'data' => $data,
-                    'options' => $options
                 ];
         });
+
+
 
         return response()->json($full);
 
