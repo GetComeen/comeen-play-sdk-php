@@ -84,8 +84,8 @@ class ApplicationController extends Controller
             $slide_filename = str_replace(['.ts', '.vue'], '.js', $slide_filename);
             $options_filename = str_replace(['.ts', '.vue'], '.js', $options_filename);
 
-            $slideUrl = route('applications.build', [$appId, $slide_filename]). "?version=$version";
-            $optionsUrl = route('applications.build', [$appId, $options_filename]). "?version=$version";
+            $slideUrl = route('api.applications.build', [$appId, $slide_filename]). "?version=$version";
+            $optionsUrl = route('api.applications.build', [$appId, $options_filename]). "?version=$version";
 
             return [
                 $module->identifier => [
