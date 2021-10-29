@@ -67,8 +67,9 @@ abstract class ApplicationImporter
         $this->app = $this->createApp();
         $this->modules = $this->createModules();
 
-        Artisan::call('generate:webpack-config '. $this->app->id);
-        Artisan::call('build:application '. $this->app->id);
+        $this->install_node_modules();
+        $this->install_composer_packages();
+        $this->build_webpack_artifacts();
 
         $this->builds = $this->createBuilds();
         $this->privileges = $this->createPrivileges();
@@ -88,6 +89,7 @@ abstract class ApplicationImporter
 
 
         $this->install_node_modules();
+        $this->install_composer_packages();
         $this->build_webpack_artifacts();
 
         $this->builds = $this->createBuilds();
@@ -104,7 +106,7 @@ abstract class ApplicationImporter
 
     private function install_composer_packages(): int
     {
-        $process = Process::fromShellCommandline('cd ' .$this->path. ' && composer install');
+        $process = Process::fromShellCommandline('cd ' .$this->path. ' && composer install && composer dump-autoload');
         return $process->run(null, ['PATH' => ':/usr/local/bin']);
     }
 

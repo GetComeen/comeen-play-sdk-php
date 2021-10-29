@@ -15,9 +15,13 @@ class ModuleResolverController extends Controller
     {
         $full = [];
 
-        $slides = request()->all();
+        $json = request()->getContent();
+        if (!$json)
+            return ['error' => 'invalid/missing json format'];
 
-        collect(request()->all())->each(function ($slideData, $key) use (&$full) {
+        $slides = json_decode($json, true);
+
+        collect($slides)->each(function ($slideData, $key) use (&$full) {
             $module = Module::whereIdentifier(Arr::get($slideData, 'module'))->firstOrFail();
 
             if (!Arr::get($slideData, 'options')) {
