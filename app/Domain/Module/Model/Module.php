@@ -27,6 +27,8 @@ class Module extends Model
     protected $fillable = [
         'name',
         'type',
+        'logo',
+        'color',
         'description',
         'identifier',
         'application_id',

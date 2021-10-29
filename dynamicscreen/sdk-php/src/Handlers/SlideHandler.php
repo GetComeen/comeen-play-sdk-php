@@ -7,9 +7,10 @@ use DynamicScreen\SdkPhp\Interfaces\ISlide;
 
 abstract class SlideHandler
 {
+    protected array $slide_buffer = [];
     protected Module $module;
 
-    abstract public function fetch(ISlide $slide);
+    abstract public function fetch(ISlide $slide): void;
 
     public function __construct(Module $module)
     {
@@ -64,8 +65,7 @@ abstract class SlideHandler
 
     public function getColor()
     {
-//        return $this->module->color || '#239d00';
-        return $this->module->color || '#239d00';
+        return $this->module->color;
     }
 
     public function isCompatibleWithDisplayMode()
@@ -86,6 +86,19 @@ abstract class SlideHandler
     public function processOptions($options)
     {
         return $options;
+    }
+
+    final protected function addSlide($slide)
+    {
+        $this->slide_buffer[] = $slide;
+        return $this;
+    }
+
+    final public function flushSlides()
+    {
+        $slides = $this->slide_buffer;
+        $this->slide_buffer = [];
+        return $slides;
     }
 
     final public function toArray()

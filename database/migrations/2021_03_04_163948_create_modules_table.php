@@ -18,6 +18,7 @@ class CreateModulesTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('description');
+            $table->string('logo')->default('fa fa-info-circle');
             $table->string('color')->default('#24A900');
             $table->string('identifier');
             $table->foreignId('application_id')

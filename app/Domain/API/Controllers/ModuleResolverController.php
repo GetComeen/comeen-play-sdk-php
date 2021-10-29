@@ -33,17 +33,13 @@ class ModuleResolverController extends Controller
                 ]);
             }
 
-            $options = $slideData['options'];
-
             $handler = $module->getHandler($module);
             $slideHandler = new $handler($module);
 
-            $data = $slideHandler->fetch(new SlideModule($slideData));
+            $slideHandler->fetch(new SlideModule($slideData));
 
 
-            $full[$key] = [
-                    'data' => $data,
-                ];
+            $full[$key] = ['data' => $slideHandler->flushSlides()];
         });
 
 
