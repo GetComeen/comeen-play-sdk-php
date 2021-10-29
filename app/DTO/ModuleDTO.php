@@ -12,6 +12,7 @@ class ModuleDTO extends DTO
     public string $name;
     public string $description;
     public string $type;
+    public string $logo;
     #[LiteralTypeScriptType("Record<string, any>[]")]
     public array $options;
     #[LiteralTypeScriptType("Application")]

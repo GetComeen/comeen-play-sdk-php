@@ -76,6 +76,11 @@ class Module extends Model
         return $this->application->i18n->getTranslation($value);
     }
 
+    public function getLogoAttribute($value)
+    {
+        return $this->application->i18n->getTranslation($value);
+    }
+
     public function getOption($key, $default = null)
     {
         return Arr::get($this->options, $key, $default);

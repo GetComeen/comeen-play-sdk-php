@@ -33,6 +33,7 @@ identifier: string;
 name: string;
 description: string;
 type: string;
+logo: string;
 options: Record<string, any>[];
 application: Application;
 id: number;
