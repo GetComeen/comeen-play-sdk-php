@@ -2,17 +2,17 @@
 
 namespace DynamicScreen\SdkPhp\Handlers;
 
-use App\Domain\Module\Model\Module;
+use DynamicScreen\SdkPhp\Interfaces\IModule;
 use DynamicScreen\SdkPhp\Interfaces\ISlide;
 
 abstract class SlideHandler
 {
     protected array $slide_buffer = [];
-    protected Module $module;
+    protected IModule $module;
 
     abstract public function fetch(ISlide $slide): void;
 
-    public function __construct(Module $module)
+    public function __construct(IModule $module)
     {
         $this->module = $module;
     }
@@ -26,7 +26,6 @@ abstract class SlideHandler
     {
         return $this->module->name;
     }
-
 
     public final function getFullIdentifier()
     {
