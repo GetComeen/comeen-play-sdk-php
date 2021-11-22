@@ -105,7 +105,7 @@ abstract class BaseAuthProviderHandler
 
     public final function getProviderIdentifier(): string
     {
-        return self::$provider;
+        return static::$provider;
     }
 
 }
