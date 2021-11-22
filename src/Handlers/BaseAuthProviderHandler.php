@@ -8,6 +8,9 @@ use Illuminate\Support\HtmlString;
 
 abstract class BaseAuthProviderHandler
 {
+    protected static string $provider = 'unknown';
+    protected array $data_buffer = [];
+
     abstract public function identifier();
 
     abstract public function name();
@@ -18,8 +21,19 @@ abstract class BaseAuthProviderHandler
 
     abstract public function color();
 
-//    abstract public function handleConnection($request);
     abstract public function testConnection($request);
+
+    public function provideData()
+    {
+        $this->addData("pages", function ($options) { return $options["access_token"]; });
+        $this->addData("userinfo", function () { return []; });
+    }
+
+    final protected function addData(string $key, callable $data)
+    {
+        $this->data_buffer[$key] = $data;
+        return $this->data_buffer;
+    }
 
     public function toArray()
     {
@@ -87,6 +101,11 @@ abstract class BaseAuthProviderHandler
         }
 
         return new HtmlString("<i class=\"fal fa-fw fa-3x {$icon}\"></i>");
+    }
+
+    public final function getProviderIdentifier(): string
+    {
+        return self::$provider;
     }
 
 }
