@@ -3,6 +3,7 @@
 
 namespace DynamicScreen\SdkPhp\Handlers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 
@@ -25,14 +26,22 @@ abstract class BaseAuthProviderHandler
 
     public function provideData()
     {
-        $this->addData("pages", function ($options) { return $options["access_token"]; });
-        $this->addData("userinfo", function () { return []; });
+        return ;
     }
 
-    final protected function addData(string $key, callable $data)
+    final public function getData($key)
+    {
+        $method = Arr::get($this->data_buffer, $key);
+        if ($method && is_callable($method)) {
+            return $method();
+        }
+
+        return [];
+    }
+
+    final protected function addData(string $key, callable $data): void
     {
         $this->data_buffer[$key] = $data;
-        return $this->data_buffer;
     }
 
     public function toArray()
