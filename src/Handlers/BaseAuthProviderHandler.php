@@ -24,9 +24,9 @@ abstract class BaseAuthProviderHandler
 
     abstract public function testConnection($request);
 
-    public function provideData()
+    public function provideData($settings = [])
     {
-        return ;
+
     }
 
     final public function getData($key)
