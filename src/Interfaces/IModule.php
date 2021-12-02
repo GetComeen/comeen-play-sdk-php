@@ -18,7 +18,7 @@ interface IModule
 {
     public function application();
     public function getOption($key, $default = null);
-    public function getTranslationFilesPath();
+    public function translationFilesPath();
     public function getHandlerClass();
     public function getHandler(...$config);
 }
