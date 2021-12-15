@@ -8,38 +8,15 @@ abstract class TokenAuthProviderHandler extends BaseAuthProviderHandler
 
     abstract public function endpoint_uri();
 
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [
             'key' => ''
         ];
     }
 
-    public final function getOptionsValidator(array $options)
-    {
-        return $this->optionsValidator($this->makeValidator($options), $options);
-    }
-
-    public function optionsValidator(\Illuminate\Validation\Validator $validator, array $options)
-    {
-        $validator->addRules([
-            'key' => 'required'
-        ]);
-
-        $validator->addCustomAttributes([
-            'key' => $this->getTokenName()
-        ]);
-
-        return $validator;
-    }
-
-    public function getTokenName()
+    public function getTokenName(): string
     {
         return 'Token';
-    }
-
-    protected final function makeValidator(array $values = [])
-    {
-        return app('validator')->make($values, []);
     }
 }

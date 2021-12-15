@@ -2,15 +2,20 @@
 
 namespace DynamicScreen\SdkPhp\Handlers;
 
+use DynamicScreen\SdkPhp\Interfaces\IModule;
+
 abstract class OAuthProviderHandler extends BaseAuthProviderHandler
 {
-    abstract public function signin($config);
+    protected $default_config = [];
 
+    abstract public function signin($config);
     abstract public function callback($request, $redirectUrl = null);
 
-    public function getCustomCreateStep2($account, $redirectUrl)
+
+    public function __construct(IModule $module, $config = null)
     {
-        return redirect($redirectUrl);
+        parent::__construct($module);
+        $this->default_config = $config;
     }
 
     public function refreshToken($account)
