@@ -16,7 +16,12 @@ class SlideModule implements ISlide
 
     public function getName()
     {
-        return $this->getOption('name');
+        return Arr::get($this->slide, 'name', '');
+    }
+
+    public function getDuration()
+    {
+        return Arr::get($this->slide, 'duration', 5);
     }
 
     public function getOptions(): array
