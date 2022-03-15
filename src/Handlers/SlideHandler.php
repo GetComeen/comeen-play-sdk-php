@@ -2,7 +2,6 @@
 
 namespace DynamicScreen\SdkPhp\Handlers;
 
-use DynamicScreen\SdkPhp\Interfaces\IModule;
 use DynamicScreen\SdkPhp\Interfaces\ISlide;
 use Illuminate\Support\Arr;
 
@@ -44,6 +43,14 @@ abstract class SlideHandler extends Handler
         $config = Arr::first($providerCredentialsList, fn($credentials, $provider) => $provider === $mod->identifier);
 
         return $mod->getHandler($config);
+    }
+
+    public function getValidations($options = null): array
+    {
+        return [
+            'rules' => [],
+            'messages' => []
+        ];
     }
 
     public function needed_accounts()
