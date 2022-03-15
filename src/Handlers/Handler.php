@@ -68,6 +68,14 @@ abstract class Handler
         return $options;
     }
 
+    public function getValidations($options = null): array
+    {
+        return [
+            'rules' => [],
+            'messages' => []
+        ];
+    }
+
     public function toArray()
     {
         return [

@@ -45,14 +45,6 @@ abstract class SlideHandler extends Handler
         return $mod->getHandler($config);
     }
 
-    public function getValidations($options = null): array
-    {
-        return [
-            'rules' => [],
-            'messages' => []
-        ];
-    }
-
     public function needed_accounts()
     {
         return $this->module->getOption('privileges.needs_account', false);
