@@ -54,4 +54,9 @@ class SlideModule implements ISlide
     {
         return Arr::get($this->slide, "accounts", []);
     }
+
+    public function getTemplate()
+    {
+        return Arr::get($this->slide, "template", []);
+    }
 }

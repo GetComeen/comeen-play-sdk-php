@@ -10,4 +10,5 @@ interface ISlide {
     public function getMedias();
     public function getAccount($key);
     public function getAccounts();
+    public function getTemplate();
 }
