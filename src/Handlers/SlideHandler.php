@@ -3,13 +3,14 @@
 namespace DynamicScreen\SdkPhp\Handlers;
 
 use DynamicScreen\SdkPhp\Interfaces\ISlide;
+use DynamicScreen\SdkPhp\Interfaces\IDisplay;
 use Illuminate\Support\Arr;
 
 abstract class SlideHandler extends Handler
 {
     protected array $slide_buffer = [];
 
-    abstract public function fetch(ISlide $slide): void;
+    abstract public function fetch(ISlide $slide, IDisplay $display): void;
 
     public function getDefaultOptions()
     {
