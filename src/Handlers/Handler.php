@@ -88,4 +88,9 @@ abstract class Handler
             'version' => $this->getVersion(),
         ];
     }
+
+    protected function getTranslation($key)
+    {
+        return $this->module->application->i18n->getTranslation($key);
+    }
 }
