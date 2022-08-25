@@ -1,6 +1,6 @@
 <?php
 
-namespace DynamicScreen\SdkPhp\Handlers;
+namespace ComeenPlay\SdkPhp\Handlers;
 
 use DynamicScreen\SdkPhp\Interfaces\IScenario;
 

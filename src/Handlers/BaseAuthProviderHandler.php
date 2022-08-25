@@ -1,7 +1,7 @@
 <?php
 
 
-namespace DynamicScreen\SdkPhp\Handlers;
+namespace ComeenPlay\SdkPhp\Handlers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;

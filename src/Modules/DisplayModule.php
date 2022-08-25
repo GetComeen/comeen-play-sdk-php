@@ -1,6 +1,6 @@
 <?php
 
-namespace DynamicScreen\SdkPhp\Modules;
+namespace ComeenPlay\SdkPhp\Modules;
 
 use Illuminate\Support\Arr;
 use DynamicScreen\SdkPhp\Interfaces\IDisplay;

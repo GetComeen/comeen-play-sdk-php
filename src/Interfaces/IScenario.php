@@ -1,6 +1,6 @@
 <?php
 
-namespace DynamicScreen\SdkPhp\Interfaces;
+namespace ComeenPlay\SdkPhp\Interfaces;
 
 interface IScenario
 {

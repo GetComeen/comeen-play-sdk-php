@@ -1,5 +1,5 @@
 <?php
-namespace DynamicScreen\SdkPhp\Interfaces;
+namespace ComeenPlay\SdkPhp\Interfaces;
 
 interface IDisplay {
     public function getName();

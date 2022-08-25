@@ -1,6 +1,6 @@
 {
-    "name": "dynamicscreen/sdk-php",
-    "description": "Php SDK for dynamicscreen apps",
+    "name": "comeen-play/sdk-php",
+    "description": "Php SDK for Comeen Play apps",
     "license": "MIT",
     "config": {
         "optimize-autoloader": true,
@@ -9,21 +9,18 @@
     },
     "autoload": {
         "psr-4": {
-            "DynamicScreen\\SdkPhp\\": "src/"
+            "ComeenPlay\\SdkPhp\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DynamicScreen\\SdkPhp\\": "src/"
+            "ComeenPlay\\SdkPhp\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "DynamicScreen",
-            "email": "bonjour@dynamicscreen.com"
+            "name": "Comeen",
+            "email": "support@comeen.com"
         }
-    ],
-    "require": {
-        "unsplash/unsplash": "^3.1"
-    }
+    ]
 }
