@@ -3,7 +3,7 @@
 namespace ComeenPlay\SdkPhp\Modules;
 
 use Illuminate\Support\Arr;
-use DynamicScreen\SdkPhp\Interfaces\ISlide;
+use ComeenPlay\SdkPhp\Interfaces\ISlide;
 
 class SlideModule implements ISlide
 {

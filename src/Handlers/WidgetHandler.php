@@ -2,7 +2,7 @@
 
 namespace ComeenPlay\SdkPhp\Handlers;
 
-use DynamicScreen\SdkPhp\Interfaces\IWidget;
+use ComeenPlay\SdkPhp\Interfaces\IWidget;
 
 abstract class WidgetHandler extends Handler
 {

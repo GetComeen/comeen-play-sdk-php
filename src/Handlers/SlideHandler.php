@@ -2,8 +2,8 @@
 
 namespace ComeenPlay\SdkPhp\Handlers;
 
-use DynamicScreen\SdkPhp\Interfaces\ISlide;
-use DynamicScreen\SdkPhp\Interfaces\IDisplay;
+use ComeenPlay\SdkPhp\Interfaces\ISlide;
+use ComeenPlay\SdkPhp\Interfaces\IDisplay;
 use Illuminate\Support\Arr;
 
 abstract class SlideHandler extends Handler

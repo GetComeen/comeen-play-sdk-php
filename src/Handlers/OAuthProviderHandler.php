@@ -2,7 +2,7 @@
 
 namespace ComeenPlay\SdkPhp\Handlers;
 
-use DynamicScreen\SdkPhp\Interfaces\IModule;
+use ComeenPlay\SdkPhp\Interfaces\IModule;
 
 abstract class OAuthProviderHandler extends BaseAuthProviderHandler
 {

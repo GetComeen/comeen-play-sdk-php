@@ -2,7 +2,7 @@
 
 namespace ComeenPlay\SdkPhp\Handlers;
 
-use DynamicScreen\SdkPhp\Interfaces\IScenario;
+use ComeenPlay\SdkPhp\Interfaces\IScenario;
 
 abstract class ScenarioHandler extends Handler
 {
