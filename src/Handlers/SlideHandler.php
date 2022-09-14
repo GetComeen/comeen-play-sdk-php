@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 abstract class SlideHandler extends Handler
 {
     protected array $slide_buffer = [];
+    protected array $method_buffer = [];
 
     abstract public function fetch(ISlide $slide, IDisplay $display): void;
 
@@ -59,5 +60,24 @@ abstract class SlideHandler extends Handler
     public function needed_templates()
     {
         return $this->module->getOption('privileges.needs_template', false);
+    }
+
+    public function provideRemoteMethods()
+    {
+
+    }
+
+    public function addRemoteMethod(string $key, callable $method) {
+        $this->method_buffer[$key] = $method;
+    }
+
+    final public function callRemoteMethod($key, $parameters)
+    {
+        $method = Arr::get($this->method_buffer, $key);
+        if ($method && is_callable($method)) {
+            return $method($parameters);
+        }
+
+        return [];
     }
 }

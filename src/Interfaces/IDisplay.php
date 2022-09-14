@@ -2,6 +2,7 @@
 namespace ComeenPlay\SdkPhp\Interfaces;
 
 interface IDisplay {
+    public function getId();
     public function getName();
     public function getLogoURL();
     public function getLanguage();

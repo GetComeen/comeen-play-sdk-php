@@ -14,6 +14,10 @@ class DisplayModule implements IDisplay
         $this->display = $options;
     }
 
+    public function getId() {
+        return Arr::get($this->display, 'id', null);
+    }
+
     public function getName()
     {
         return Arr::get($this->display, 'name', '');
