@@ -93,4 +93,30 @@ abstract class Handler
     {
         return $this->module->application->i18n->getTranslation($key);
     }
+
+    public function provideRemoteMethods()
+    {
+
+    }
+
+    public function addRemoteMethod(string $key, callable $method) {
+        $this->method_buffer[$key] = $method;
+    }
+
+    final public function callRemoteMethod($key, $parameters, $details)
+    {
+        $method = Arr::get($this->method_buffer, $key);
+        if ($method && is_callable($method)) {
+            $display = Arr::get($details, 'display');
+            $slide = Arr::get($details, 'slide');
+            $account = Arr::get($details, 'account');
+            return $method($parameters, [
+                'display' => $display ? new DisplayModule($display) : null,
+                'slide' => $slide ? new SlideModule($display) : null,
+                'account' => $account,
+            ]);
+        }
+
+        return [];
+    }
 }

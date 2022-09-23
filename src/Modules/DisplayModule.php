@@ -66,4 +66,27 @@ class DisplayModule implements IDisplay
     {
         return Arr::get($this->display, 'display_metadata', []);
     }
+
+    public function setMetadata($key, $value)
+    {
+        $client = new Client([
+            'base_uri' => config('services.api.url')
+        ]);
+
+        $client->post("/display/upsert-metadata?api_key=" . Arr::get($this->display, 'api_key'), [
+            'json' => [
+                "key" => $key,
+                "value" => $value
+            ]
+        ]);
+    }
+
+    public function refreshData()
+    {
+        $client = new Client([
+            'base_uri' => config('services.api.url')
+        ]);
+
+        $client->post("/display/refresh-data?api_key=" . Arr::get($this->display, 'api_key'));
+    }
 }

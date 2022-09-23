@@ -4,6 +4,8 @@ namespace ComeenPlay\SdkPhp\Handlers;
 
 use ComeenPlay\SdkPhp\Interfaces\ISlide;
 use ComeenPlay\SdkPhp\Interfaces\IDisplay;
+use ComeenPlay\SdkPhp\Modules\DisplayModule;
+use ComeenPlay\SdkPhp\Modules\SlideModule;
 use Illuminate\Support\Arr;
 
 abstract class SlideHandler extends Handler
@@ -62,22 +64,4 @@ abstract class SlideHandler extends Handler
         return $this->module->getOption('privileges.needs_template', false);
     }
 
-    public function provideRemoteMethods()
-    {
-
-    }
-
-    public function addRemoteMethod(string $key, callable $method) {
-        $this->method_buffer[$key] = $method;
-    }
-
-    final public function callRemoteMethod($key, $parameters)
-    {
-        $method = Arr::get($this->method_buffer, $key);
-        if ($method && is_callable($method)) {
-            return $method($parameters);
-        }
-
-        return [];
-    }
 }

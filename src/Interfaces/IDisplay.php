@@ -11,5 +11,7 @@ interface IDisplay {
     public function getOrientation();
     public function getUnitSystem();
     public function getClockFormat();
-    public function getMetadata();
+    public function getMetadata($key);
+    public function setMetadata($key, $value);
+    public function refreshData();
 }
