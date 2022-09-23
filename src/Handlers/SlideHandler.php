@@ -4,8 +4,6 @@ namespace ComeenPlay\SdkPhp\Handlers;
 
 use ComeenPlay\SdkPhp\Interfaces\ISlide;
 use ComeenPlay\SdkPhp\Interfaces\IDisplay;
-use ComeenPlay\SdkPhp\Modules\DisplayModule;
-use ComeenPlay\SdkPhp\Modules\SlideModule;
 use Illuminate\Support\Arr;
 
 abstract class SlideHandler extends Handler

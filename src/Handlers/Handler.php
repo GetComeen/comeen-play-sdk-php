@@ -3,6 +3,8 @@
 namespace ComeenPlay\SdkPhp\Handlers;
 
 use ComeenPlay\SdkPhp\Interfaces\IModule;
+use ComeenPlay\SdkPhp\Modules\DisplayModule;
+use ComeenPlay\SdkPhp\Modules\SlideModule;
 
 abstract class Handler
 {
