@@ -62,9 +62,9 @@ class DisplayModule implements IDisplay
         return Arr::get($this->display, 'clock_format', '24h');
     }
 
-    public function getMetadata()
+    public function getMetadata($key)
     {
-        return Arr::get($this->display, 'display_metadata', []);
+        return Arr::get($this->display, "display_metadata.$key", []);
     }
 
     public function setMetadata($key, $value)
