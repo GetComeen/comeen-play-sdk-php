@@ -11,7 +11,7 @@ abstract class SlideHandler extends Handler
     protected array $slide_buffer = [];
     protected array $method_buffer = [];
 
-    abstract public function fetch(ISlide $slide, IDisplay $display): void;
+    public function fetch(ISlide $slide, IDisplay $display): void {}
 
     public function getDefaultOptions()
     {
