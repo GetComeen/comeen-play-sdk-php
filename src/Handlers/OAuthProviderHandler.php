@@ -18,8 +18,8 @@ abstract class OAuthProviderHandler extends BaseAuthProviderHandler
         $this->default_config = $config;
     }
 
-    public function refreshToken($config = null)
+    public function refreshToken($client = null)
     {
-        return $config;
+        return $this->default_config;
     }
 }
