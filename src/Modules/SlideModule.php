@@ -59,9 +59,4 @@ class SlideModule implements ISlide
     {
         return Arr::get($this->slide, "template", []);
     }
-
-    public function getSubtitle()
-    {
-        return Arr::get($this->slide, "subtitle", []);
-    }
 }
