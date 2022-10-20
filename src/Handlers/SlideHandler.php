@@ -62,4 +62,9 @@ abstract class SlideHandler extends Handler
         return $this->module->getOption('privileges.needs_template', false);
     }
 
+    public function needed_subtitle()
+    {
+        return $this->module->getOption('privileges.needs_subtitle', false);
+    }
+
 }
