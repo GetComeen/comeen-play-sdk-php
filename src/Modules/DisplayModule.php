@@ -4,6 +4,7 @@ namespace ComeenPlay\SdkPhp\Modules;
 
 use Illuminate\Support\Arr;
 use ComeenPlay\SdkPhp\Interfaces\IDisplay;
+use GuzzleHttp\Client;
 
 class DisplayModule implements IDisplay
 {
