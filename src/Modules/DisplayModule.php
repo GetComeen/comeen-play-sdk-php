@@ -19,6 +19,10 @@ class DisplayModule implements IDisplay
         return Arr::get($this->display, 'id', null);
     }
 
+    public function getAPIKey() {
+        return Arr::get($this->display, 'api_key', null);
+    }
+
     public function getName()
     {
         return Arr::get($this->display, 'name', '');
