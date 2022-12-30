@@ -39,7 +39,7 @@ abstract class SlideHandler extends Handler
             $authProviderIdentifier = Arr::first($authProviderIdentifier);
         }
 
-        $modules = $this->app()->modules->where('type', 'auth-provider');
+        $modules = Module::all()->where('type', 'auth-provider');
         $mod = Arr::first($modules, fn($key, $value) => Arr::get($key, 'identifier') === $authProviderIdentifier);
 
         $config = Arr::first($providerCredentialsList, fn($credentials, $provider) => $provider === $mod->identifier);
