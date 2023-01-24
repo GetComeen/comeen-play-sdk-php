@@ -14,6 +14,11 @@ class SlideModule implements ISlide
         $this->slide = $options;
     }
 
+    public function getId()
+    {
+        return Arr::get($this->slide, 'id', null);
+    }
+
     public function getName()
     {
         return Arr::get($this->slide, 'name', '');

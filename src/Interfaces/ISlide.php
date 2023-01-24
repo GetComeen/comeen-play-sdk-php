@@ -2,6 +2,7 @@
 namespace ComeenPlay\SdkPhp\Interfaces;
 
 interface ISlide {
+    public function getId();
     public function getName();
     public function getOptions();
     public function getDuration();
