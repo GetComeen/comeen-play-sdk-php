@@ -109,13 +109,14 @@ abstract class Handler
     final public function callRemoteMethod($key, $parameters, $details)
     {
         $method = Arr::get($this->method_buffer, $key);
+
         if ($method && is_callable($method)) {
             $display = Arr::get($details, 'display');
             $slide = Arr::get($details, 'slide');
             $account = Arr::get($details, 'account');
             return $method($parameters, [
                 'display' => $display ? new DisplayModule($display) : null,
-                'slide' => $slide ? new SlideModule($display) : null,
+                'slide' => $slide ? new SlideModule($slide) : null,
                 'account' => $account,
             ]);
         }
