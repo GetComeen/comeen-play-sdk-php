@@ -21,4 +21,16 @@ class ManagerModule
             ]
         ]);
     }
+
+    public static function updateAccountOptions($account_id, $options) {
+        $client = new Client([
+            'base_uri' => config('services.api.url')
+        ]);
+
+        $client->put("/app-server/account/$account_id/options", [
+            'json' => [
+                "options" => $options,
+            ]
+        ]);
+    }
 }
