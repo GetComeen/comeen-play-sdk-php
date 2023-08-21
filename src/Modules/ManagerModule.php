@@ -16,7 +16,9 @@ class ManagerModule
                 "/app-server/slides/refresh",
                 app(RequestSignatureGenerator::class)->signRequestParameters([
                     "space_id" => $space_id,
-                    "query" => $slides_query,
+                    "type" => $slide_type,
+                    "display_metadata_key" => $display_metadata_key,
+                    "display_metadata_value" => $display_metadata_value,
                 ])
             )
             ->throw();
@@ -34,16 +36,14 @@ class ManagerModule
             ->throw();
     }
 
-    public static function updateSlidesOptions($space_id, $slides_query, $options) {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
-
-        $client->put("/app-server/$space_id/slides", [
-            'json' => [
+    public static function updateSlidesOptions($space_id, $slides_query, $options)
+    {
+        // TODO sign this request
+        self::createApiClient()
+            ->put("/app-server/$space_id/slides", [
                 "query" => $slides_query,
                 "options" => $options,
-            ]
-        ]);
+            ])
+            ->throw();
     }
 }
