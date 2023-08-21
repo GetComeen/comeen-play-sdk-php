@@ -38,12 +38,14 @@ class ManagerModule
 
     public static function updateSlidesOptions($space_id, $slides_query, $options)
     {
-        // TODO sign this request
         self::createApiClient()
-            ->put("/app-server/$space_id/slides", [
-                "query" => $slides_query,
-                "options" => $options,
-            ])
+            ->put(
+                "/app-server/$space_id/slides",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "query" => $slides_query,
+                    "options" => $options,
+                ])
+            )
             ->throw();
     }
 }
