@@ -2,35 +2,37 @@
 
 namespace ComeenPlay\SdkPhp\Modules;
 
-use GuzzleHttp\Client;
+use App\Signature\RequestSignatureGenerator;
+use function app;
 
 class ManagerModule
 {
-    public static function refreshSlides($space_id, $slide_type, $display_metadata_key, $display_metadata_value)
-    {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
+    use UseApiClient;
 
-        $client->post("/app-server/slides/refresh", [
-            'json' => [
-                "space_id" => $space_id,
-                "type" => $slide_type,
-                "display_metadata_key" => $display_metadata_key,
-                "display_metadata_value" => $display_metadata_value,
-            ]
-        ]);
+    public static function refreshSlides($space_id, $slide_type, $display_metadata_key, $display_metadata_value): void
+    {
+        self::createApiClient()
+            ->post(
+                "/app-server/slides/refresh",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "space_id" => $space_id,
+                    "type" => $slide_type,
+                    "display_metadata_key" => $display_metadata_key,
+                    "display_metadata_value" => $display_metadata_value,
+                ])
+            )
+            ->throw();
     }
 
-    public static function updateAccountOptions($account_id, $options) {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
-
-        $client->put("/app-server/account/$account_id/options", [
-            'json' => [
-                "options" => $options,
-            ]
-        ]);
+    public static function updateAccountOptions($account_id, $options): void
+    {
+        self::createApiClient()
+            ->put(
+                "/app-server/account/$account_id/options",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "options" => $options,
+                ])
+            )
+            ->throw();
     }
 }

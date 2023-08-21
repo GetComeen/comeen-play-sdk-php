@@ -2,18 +2,26 @@
 
 namespace ComeenPlay\SdkPhp\Modules;
 
-use Illuminate\Support\Arr;
+use App\Signature\RequestSignatureGenerator;
 use ComeenPlay\SdkPhp\Interfaces\IDisplay;
-use GuzzleHttp\Client;
+use function app;
+use function http_build_query;
 
 class LibraryModule
 {
-    public static function listFolders(IDisplay $display)
-    {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
+    use UseApiClient;
 
-        return json_decode($client->get("/display/list-folders?api_key=" . $display->getAPIKey())->getBody()->getContents());
+    public static function listFolders(IDisplay $display): array
+    {
+        $queryStringParams = http_build_query(
+            app(RequestSignatureGenerator::class)->signRequestParameters([
+                'api_key' => $display->getAPIKey(),
+            ])
+        );
+
+        return self::createApiClient()
+            ->get("/display/list-folders?$queryStringParams")
+            ->throw()
+            ->json();
     }
 }
