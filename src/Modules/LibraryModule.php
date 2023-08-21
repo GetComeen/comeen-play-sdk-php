@@ -16,4 +16,35 @@ class LibraryModule
 
         return json_decode($client->get("/display/list-folders?api_key=" . $display->getAPIKey())->getBody()->getContents());
     }
+
+    public static function uploadMedias(array $files) {
+        $client = new Client([
+            'base_uri' => config('services.api.url')
+        ]);
+
+        try {
+            $multipart = [
+                [
+                    "name" => "space_id",
+                    "contents" => "1"
+                ]
+            ];
+            $i = 0;
+            foreach ($files as $file) {
+                // dd($file->get());
+                array_push($multipart, [
+                    'name' => "medias-$i",
+                    'filename' => $file->getClientOriginalName(),
+                    'contents' => $file->get()
+                ]);
+                $i++;
+            }
+
+            return json_decode($client->post("/app-server/medias/upload", [
+                "multipart" => $multipart
+            ])->getBody()->getContents());
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
 }
