@@ -17,7 +17,7 @@ class LibraryModule
         return json_decode($client->get("/display/list-folders?api_key=" . $display->getAPIKey())->getBody()->getContents());
     }
 
-    public static function uploadMedias(array $files) {
+    public static function uploadMedias($space_id, array $files) {
         $client = new Client([
             'base_uri' => config('services.api.url')
         ]);
@@ -26,7 +26,7 @@ class LibraryModule
             $multipart = [
                 [
                     "name" => "space_id",
-                    "contents" => "1"
+                    "contents" => $space_id
                 ]
             ];
             $i = 0;
