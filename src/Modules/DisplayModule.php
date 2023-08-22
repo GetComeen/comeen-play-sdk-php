@@ -2,12 +2,15 @@
 
 namespace ComeenPlay\SdkPhp\Modules;
 
-use Illuminate\Support\Arr;
+use App\Signature\RequestSignatureGenerator;
 use ComeenPlay\SdkPhp\Interfaces\IDisplay;
-use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
+use function app;
 
 class DisplayModule implements IDisplay
 {
+    use UseApiClient;
+
     private array $display = [];
 
     public function __construct(array $options)
@@ -15,11 +18,13 @@ class DisplayModule implements IDisplay
         $this->display = $options;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return Arr::get($this->display, 'id', null);
     }
 
-    public function getAPIKey() {
+    public function getAPIKey()
+    {
         return Arr::get($this->display, 'api_key', null);
     }
 
@@ -48,7 +53,7 @@ class DisplayModule implements IDisplay
         return [
             'address' => Arr::get($this->display, 'address', ''),
             'lat' => Arr::get($this->display, 'lat', ''),
-            'lng' => Arr::get($this->display, 'lng', '')
+            'lng' => Arr::get($this->display, 'lng', ''),
         ];
     }
 
@@ -72,26 +77,29 @@ class DisplayModule implements IDisplay
         return Arr::get($this->display, "display_metadata.$key", []);
     }
 
-    public function setMetadata($key, $value)
+    public function setMetadata($key, $value): void
     {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
-
-        $client->post("/display/upsert-metadata?api_key=" . Arr::get($this->display, 'api_key'), [
-            'json' => [
-                "key" => $key,
-                "value" => $value
-            ]
-        ]);
+        self::createApiClient()
+            ->post(
+                "/display/upsert-metadata",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    'api_key' => $this->getAPIKey(),
+                    "key" => $key,
+                    "value" => $value,
+                ])
+            )
+            ->throw();
     }
 
-    public function refreshData()
+    public function refreshData(): void
     {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
-
-        $client->post("/display/refresh-data?api_key=" . Arr::get($this->display, 'api_key'));
+        self::createApiClient()
+            ->post(
+                '/display/refresh-data',
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    'api_key' => $this->getAPIKey(),
+                ])
+            )
+            ->throw();
     }
 }

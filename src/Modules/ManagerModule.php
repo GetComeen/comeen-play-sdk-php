@@ -2,46 +2,48 @@
 
 namespace ComeenPlay\SdkPhp\Modules;
 
-use GuzzleHttp\Client;
+use App\Signature\RequestSignatureGenerator;
+use function app;
 
 class ManagerModule
 {
-    public static function refreshSlides($space_id, $slides_query)
+    use UseApiClient;
+
+    public static function refreshSlides($space_id, $slides_query): void
     {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
-
-        $client->post("/app-server/slides/refresh", [
-            'json' => [
-                "space_id" => $space_id,
-                "query" => $slides_query,
-            ]
-        ]);
+        self::createApiClient()
+            ->post(
+                "/app-server/slides/refresh",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "space_id" => $space_id,
+                    "query" => $slides_query,
+                ])
+            )
+            ->throw();
     }
 
-    public static function updateAccountOptions($account_id, $options) {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
-
-        $client->put("/app-server/account/$account_id/options", [
-            'json' => [
-                "options" => $options,
-            ]
-        ]);
+    public static function updateAccountOptions($account_id, $options): void
+    {
+        self::createApiClient()
+            ->put(
+                "/app-server/account/$account_id/options",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "options" => $options,
+                ])
+            )
+            ->throw();
     }
 
-    public static function updateSlidesOptions($space_id, $slides_query, $options) {
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
-
-        $client->put("/app-server/$space_id/slides", [
-            'json' => [
-                "query" => $slides_query,
-                "options" => $options,
-            ]
-        ]);
+    public static function updateSlidesOptions($space_id, $slides_query, $options)
+    {
+        self::createApiClient()
+            ->put(
+                "/app-server/$space_id/slides",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "query" => $slides_query,
+                    "options" => $options,
+                ])
+            )
+            ->throw();
     }
 }
