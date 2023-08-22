@@ -9,16 +9,14 @@ class ManagerModule
 {
     use UseApiClient;
 
-    public static function refreshSlides($space_id, $slide_type, $display_metadata_key, $display_metadata_value): void
+    public static function refreshSlides($space_id, $slides_query): void
     {
         self::createApiClient()
             ->post(
                 "/app-server/slides/refresh",
                 app(RequestSignatureGenerator::class)->signRequestParameters([
                     "space_id" => $space_id,
-                    "type" => $slide_type,
-                    "display_metadata_key" => $display_metadata_key,
-                    "display_metadata_value" => $display_metadata_value,
+                    "query" => $slides_query,
                 ])
             )
             ->throw();
