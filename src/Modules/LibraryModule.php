@@ -26,7 +26,7 @@ class LibraryModule
             ->json();
     }
 
-    public static function uploadMedias(array $files)
+    public static function uploadMedias($space_id, array $files)
     {
         // TODO find a way to sign multipart requests with uploaded files
         // TODO refacto to use the HTTP Client (see https://laravel.com/docs/8.x/http-client#multi-part-requests)
@@ -39,7 +39,7 @@ class LibraryModule
             $multipart = [
                 [
                     "name" => "space_id",
-                    "contents" => "1"
+                    "contents" => $space_id
                 ]
             ];
             $i = 0;
