@@ -43,6 +43,11 @@ class DisplayModule implements IDisplay
         return Arr::get($this->display, 'language', 'en');
     }
 
+    public function getModel()
+    {
+        return Arr::get($this->display, "player.model.name", []);
+    }
+
     public function getTimezone()
     {
         return Arr::get($this->display, 'timezone', 'Etc/UTC');

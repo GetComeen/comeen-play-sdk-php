@@ -7,6 +7,7 @@ interface IDisplay {
     public function getName();
     public function getLogoURL();
     public function getLanguage();
+    public function getModel();
     public function getTimezone();
     public function getLocation();
     public function getOrientation();
