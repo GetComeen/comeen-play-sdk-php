@@ -34,6 +34,18 @@ class ManagerModule
             ->throw();
     }
 
+    public static function mergeAccountOptions($account_id, $options): void
+    {
+        self::createApiClient()
+            ->patch(
+                "/app-server/account/$account_id/options",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "options" => $options,
+                ])
+            )
+            ->throw();
+    }
+
     public static function updateSlidesOptions($space_id, $slides_query, $options)
     {
         self::createApiClient()
