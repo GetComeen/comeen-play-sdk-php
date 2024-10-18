@@ -22,6 +22,15 @@ class ManagerModule
             ->throw();
     }
 
+    public static function getAccountOptions($account_id): void
+    {
+        self::createApiClient()
+            ->get(
+                "/app-server/account/$account_id/options"
+            )
+            ->throw();
+    }
+
     public static function updateAccountOptions($account_id, $options): void
     {
         self::createApiClient()
