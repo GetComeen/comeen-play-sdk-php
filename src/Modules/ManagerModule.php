@@ -22,6 +22,16 @@ class ManagerModule
             ->throw();
     }
 
+    public static function getAccountOptions($account_id)
+    {
+        return self::createApiClient()
+            ->get(
+                "/app-server/account/$account_id/options",
+                app(RequestSignatureGenerator::class)->signRequestParameters([])
+            )
+            ->throw();
+    }
+
     public static function updateAccountOptions($account_id, $options): void
     {
         self::createApiClient()
