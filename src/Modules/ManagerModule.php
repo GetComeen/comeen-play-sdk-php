@@ -69,7 +69,7 @@ class ManagerModule
             ->throw();
     }
 
-    public function getQrCodeInstanceUrl($content, $slide_id, $display)
+    public static function getQrCodeInstanceUrl($content, $slide_id, $display)
     {
         return self::createApiClient()
             ->get(
