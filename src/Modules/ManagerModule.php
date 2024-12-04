@@ -69,19 +69,18 @@ class ManagerModule
             ->throw();
     }
 
-    public static function getQrCodeInstanceUrl($content, $slide_id, $display_id)
+    public static function getQrCodeInstanceUrl($content, $slide_id, $display_id): string
     {
+        $queryStringParams = http_build_query(
+            app(RequestSignatureGenerator::class)->signRequestParameters([
+                "content" => $content,
+                "slide_id" => "$slide_id",
+                "display_id" => "$display_id",
+            ])
+        );
+
         return self::createApiClient()
-            ->get(
-                "/app-server/get-qr-code-instance-url",
-                app(RequestSignatureGenerator::class)->signRequestParameters([
-                    "query" => [
-                        "content" => $content,
-                        "slide_id" => $slide_id,
-                        "display_id" => $display_id,
-                    ],
-                ])
-            )
+            ->get("/app-server/get-qr-code-instance-url?$queryStringParams")
             ->throw();
     }
 }
