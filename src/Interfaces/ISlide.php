@@ -8,6 +8,7 @@ interface ISlide {
     public function getDuration();
     public function getOption($name, $default = null);
     public function getMedia($key);
+    public function getDashboard($key);
     public function getMedias();
     public function getAccount($key);
     public function getAccounts();
