@@ -58,7 +58,7 @@ abstract class SlideHandler extends Handler
         return $this->module->getOption('privileges.needs_media', false);
     }
 
-    public function needs_dashboard()
+    public function needed_dashboard()
     {
         return $this->module->getOption('privileges.needs_dashboard', false);
     }
