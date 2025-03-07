@@ -83,4 +83,16 @@ class ManagerModule
             ->get("/app-server/get-qr-code-instance-url?$queryStringParams")
             ->throw();
     }
+
+    public static function sendEmail($options): void
+    {
+        self::createApiClient()
+            ->post(
+                "/app-server/send-email",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "options" => $options,
+                ])
+            )
+            ->throw();
+    }
 }
