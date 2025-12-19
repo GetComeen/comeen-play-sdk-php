@@ -95,4 +95,29 @@ class ManagerModule
             )
             ->throw();
     }
+
+    public static function updateRemoteFile($remote_file_id, $options): void
+    {
+        self::createApiClient()
+            ->patch(
+                "/app-server/remote-file/$remote_file_id",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "model_data" => $options,
+                ])
+            )
+            ->throw();
+    }
+
+    public static function requestRemoteFileConversion($remote_file_id, $header, $download_url): void
+    {
+        self::createApiClient()
+            ->post(
+                "/app-server/remote-file/$remote_file_id/request-conversion",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "header" => $header,
+                    "download_url" => $download_url
+                ])
+            )
+            ->throw();
+    }
 }
