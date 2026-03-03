@@ -95,4 +95,40 @@ class ManagerModule
             )
             ->throw();
     }
+
+    public static function updateRemoteFile($remote_file_id, $options): void
+    {
+        self::createApiClient()
+            ->patch(
+                "/app-server/remote-file/$remote_file_id",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "model_data" => $options,
+                ])
+            )
+            ->throw();
+    }
+
+    public static function updateRemoteFileOptions($remote_file_options_id, $options): void
+    {
+        self::createApiClient()
+            ->post(
+                "/app-server/remote-file/$remote_file_options_id/options",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "model_data" => $options
+                ])
+            )
+            ->throw();
+    }
+
+    public static function sendDetectedChanges(array $changes): void
+    {
+        self::createApiClient()
+            ->post(
+                "/app-server/remote-files/change-detected",
+                app(RequestSignatureGenerator::class)->signRequestParameters([
+                    "changes" => $changes
+                ])
+            )
+            ->throw();
+    }
 }
