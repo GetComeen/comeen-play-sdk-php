@@ -13,6 +13,7 @@ trait UseApiClient
         return Http::baseUrl(config('services.api.url'))
             ->withHeaders([
                 'Referer' => config('app.url'),
+                'Accept' => 'application/json',
             ]);
     }
 }
