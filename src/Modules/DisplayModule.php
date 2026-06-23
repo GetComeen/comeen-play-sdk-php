@@ -84,27 +84,19 @@ class DisplayModule implements IDisplay
 
     public function setMetadata($key, $value): void
     {
-        self::createApiClient()
-            ->post(
-                "/display/upsert-metadata",
-                app(RequestSignatureGenerator::class)->signRequestParameters([
-                    'api_key' => $this->getAPIKey(),
-                    "key" => $key,
-                    "value" => $value,
-                ])
-            )
-            ->throw();
+        self::retryWithResign(
+            ['api_key' => $this->getAPIKey(), 'key' => $key, 'value' => $value],
+            fn($p) => app(RequestSignatureGenerator::class)->signRequestParameters($p),
+            fn($signed) => self::createApiClient()->post("/display/upsert-metadata", $signed)->throw()
+        );
     }
 
     public function refreshData(): void
     {
-        self::createApiClient()
-            ->post(
-                '/display/refresh-data',
-                app(RequestSignatureGenerator::class)->signRequestParameters([
-                    'api_key' => $this->getAPIKey(),
-                ])
-            )
-            ->throw();
+        self::retryWithResign(
+            ['api_key' => $this->getAPIKey()],
+            fn($p) => app(RequestSignatureGenerator::class)->signRequestParameters($p),
+            fn($signed) => self::createApiClient()->post('/display/refresh-data', $signed)->throw()
+        );
     }
 }

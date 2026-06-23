@@ -14,16 +14,11 @@ class LibraryModule
 
     public static function listFolders(IDisplay $display): array
     {
-        $queryStringParams = http_build_query(
-            app(RequestSignatureGenerator::class)->signRequestParameters([
-                'api_key' => $display->getAPIKey(),
-            ])
+        return self::retryWithResign(
+            ['api_key' => $display->getAPIKey()],
+            fn($p) => app(RequestSignatureGenerator::class)->signRequestParameters($p),
+            fn($signed) => self::createApiClient()->get("/display/list-folders?" . http_build_query($signed))->throw()->json()
         );
-
-        return self::createApiClient()
-            ->get("/display/list-folders?$queryStringParams")
-            ->throw()
-            ->json();
     }
 
     public static function uploadMedias($space_id, array $files)
