@@ -4,7 +4,6 @@ namespace ComeenPlay\SdkPhp\Modules;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use function config;
@@ -29,7 +28,7 @@ trait UseApiClient
      * The $signer callable re-signs params fresh on each attempt:
      *   fn(array $params): array
      */
-    private static function retryWithResign(array $params, callable $signer, callable $requestFactory): Response
+    private static function retryWithResign(array $params, callable $signer, callable $requestFactory): mixed
     {
         $attempt = 0;
         $maxAttempts = 8;
