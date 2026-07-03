@@ -90,6 +90,15 @@ class ManagerModule
         );
     }
 
+    public static function convertRemoteFilePdfs(string $remoteFileId, array $conversions): void
+    {
+        self::retryWithResign(
+            ['conversions' => $conversions],
+            fn($p) => app(RequestSignatureGenerator::class)->signRequestParameters($p),
+            fn($signed) => self::createApiClient()->post("/app-server/remote-file/$remoteFileId/convert-pdf", $signed)->throw()
+        );
+    }
+
     public static function sendDetectedChanges(array $changes): void
     {
         self::retryWithResign(
