@@ -63,6 +63,18 @@ class ManagerModule
         );
     }
 
+    /**
+     * @param array $items => must formatted like: ['content' => 'url_string', 'type' => 'url_type(url,phone,etc)']
+     */
+    public static function getBulkQrCodeInstanceUrl(array $items, $slide_id, $display_id): string
+    {
+        return self::retryWithResign(
+            ["items" => $items, "slide_id" => "$slide_id", "display_id" => "$display_id"],
+            fn($p) => app(RequestSignatureGenerator::class)->signRequestParameters($p),
+            fn($signed) => self::createApiClient()->get("/app-server/get-qr-code-instance-urls?" . http_build_query($signed))->throw()
+        );
+    }
+
     public static function sendEmail($options): void
     {
         self::retryWithResign(
