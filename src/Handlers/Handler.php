@@ -11,6 +11,8 @@ abstract class Handler
 {
     protected IModule $module;
 
+    protected array $public_method_buffer = [];
+
     public function __construct(IModule $module)
     {
         return $this->module = $module;
@@ -122,5 +124,48 @@ abstract class Handler
         }
 
         return [];
+    }
+
+    /**
+     * Declare endpoints anyone can reach without authentication, e.g. pages loaded by a
+     * display iframe. Each method must check on its own what the request is allowed to see.
+     */
+    public function providePublicMethods()
+    {
+
+    }
+
+    /**
+     * @param callable(\Illuminate\Http\Request $request, string $path): \Symfony\Component\HttpFoundation\Response $method
+     */
+    public function addPublicMethod(string $key, callable $method)
+    {
+        $this->public_method_buffer[$key] = $method;
+    }
+
+    final public function hasPublicMethod(string $key): bool
+    {
+        return is_callable(Arr::get($this->public_method_buffer, $key));
+    }
+
+    final public function callPublicMethod(string $key, $request, string $path)
+    {
+        $method = Arr::get($this->public_method_buffer, $key);
+
+        return $method($request, $path);
+    }
+
+    /**
+     * Absolute url of a public method. APP_URL is used as the host because handlers usually run
+     * in a request from the manager, whose host may not be reachable by displays.
+     */
+    final public function publicMethodUrl(string $key, string $path = ''): string
+    {
+        return rtrim(config('app.url'), '/') . route('api.modules.public', [
+            'app' => $this->module->application->id,
+            'module' => $this->module->id,
+            'method' => $key,
+            'path' => $path,
+        ], false);
     }
 }
