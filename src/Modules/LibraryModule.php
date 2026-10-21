@@ -4,7 +4,6 @@ namespace ComeenPlay\SdkPhp\Modules;
 
 use App\Signature\RequestSignatureGenerator;
 use ComeenPlay\SdkPhp\Interfaces\IDisplay;
-use GuzzleHttp\Client;
 use function app;
 use function http_build_query;
 
@@ -23,35 +22,34 @@ class LibraryModule
 
     public static function uploadMedias($space_id, array $files)
     {
-        // TODO find a way to sign multipart requests with uploaded files
-        // TODO refacto to use the HTTP Client (see https://laravel.com/docs/8.x/http-client#multi-part-requests)
+        $files = array_values($files);
 
-        $client = new Client([
-            'base_uri' => config('services.api.url')
-        ]);
+        // The binary content of the files cannot be part of the signed payload,
+        // so we bind each file to the signature through its SHA-256 hash. The
+        // Manager verifies these hashes against the actually uploaded files.
+        $fileHashes = array_map(fn($file) => hash('sha256', $file->get()), $files);
 
-        try {
-            $multipart = [
-                [
-                    "name" => "space_id",
-                    "contents" => $space_id
-                ]
-            ];
-            $i = 0;
-            foreach ($files as $file) {
-                $multipart[] = [
-                    'name' => "medias-$i",
-                    'filename' => $file->getClientOriginalName(),
-                    'contents' => $file->get()
-                ];
-                $i++;
+        // Multipart form fields are always transmitted as strings, so we sign
+        // string values to make sure the Manager rebuilds an identical payload.
+        $params = [
+            'space_id' => (string) $space_id,
+            'file_hashes' => $fileHashes,
+        ];
+
+        return self::retryWithResign(
+            $params,
+            fn($p) => app(RequestSignatureGenerator::class)->signRequestParameters($p),
+            function ($signed) use ($files) {
+                $request = self::createApiClient()->asMultipart();
+
+                foreach ($files as $i => $file) {
+                    $request = $request->attach("medias-$i", $file->get(), $file->getClientOriginalName());
+                }
+
+                return json_decode(
+                    $request->post('/app-server/medias/upload', $signed)->throw()->body()
+                );
             }
-
-            return json_decode($client->post("/app-server/medias/upload", [
-                "multipart" => $multipart
-            ])->getBody()->getContents());
-        } catch (\Exception $e) {
-            return [];
-        }
+        );
     }
 }
